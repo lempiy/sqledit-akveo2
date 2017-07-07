@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 
 @Injectable()
-export class AddTableService {
+export class ChangeTableService {
 
-  addTableData = {
+  changeTableData = {
     name: '',
     data: [],
   };
@@ -11,7 +11,7 @@ export class AddTableService {
   getData(): Promise<any> {
     return new Promise((resolve, reject) => {
       // setTimeout(() => {
-        resolve(this.addTableData);
+        resolve(this.changeTableData);
       // }, 2000);
     });
   }

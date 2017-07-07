@@ -5,6 +5,7 @@ import { BasicTables } from './components/basicTables/basicTables.component';
 import { SmartTables } from './components/smartTables/smartTables.component';
 import { AllTables } from './components/allTables/allTables.component';
 import { AddTable } from './components/addTable/addTable.component';
+import { ChangeTable } from './components/changeTable/changeTable.component';
 import { DataTables } from './components/dataTables/dataTables.component';
 import { HotTablesComponent } from './components/hotTables/hotTables.component';
 
@@ -16,6 +17,7 @@ const routes: Routes = [
     children: [
       { path: 'alltables', component: AllTables },
       { path: 'addtable', component: AddTable },
+      { path: 'changetable/:id', component: ChangeTable },
       { path: 'basictables', component: BasicTables },
       { path: 'smarttables', component: SmartTables },
       { path: 'datatables', component: DataTables },

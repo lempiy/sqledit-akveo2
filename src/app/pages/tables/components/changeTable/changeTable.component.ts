@@ -1,14 +1,14 @@
-import { Component, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
+import { Component, ViewChild, AfterViewInit } from '@angular/core';
 
-import { AddTableService } from './addTable.service';
+import { ChangeTableService } from './changeTable.service';
 import { LocalDataSource } from 'ng2-smart-table';
 
 @Component({
-  selector: 'add-table',
-  templateUrl: './addTable.html',
-  styleUrls: ['./addTable.scss']
+  selector: 'change-table',
+  templateUrl: './changeTable.html',
+  styleUrls: ['./changeTable.scss']
 })
-export class AddTable implements AfterViewInit {
+export class ChangeTable implements AfterViewInit {
 
   query: string = '';
 
@@ -81,9 +81,8 @@ export class AddTable implements AfterViewInit {
   };
 
   source: LocalDataSource = new LocalDataSource();
-  @ViewChild('inputNameElement') inputNameElement: ElementRef;
   
-  constructor(protected service: AddTableService) {
+  constructor(protected service: ChangeTableService) {
     this.service.getData().then((data) => {
       this.allTableData = Object.assign(this.allTableData, data);
       this.source.load(data.data);
@@ -91,7 +90,6 @@ export class AddTable implements AfterViewInit {
   }
 
   ngAfterViewInit() {
-    (<HTMLInputElement>this.inputNameElement.nativeElement).focus();
   }
 
   onDeleteConfirm(event): void {

@@ -21,6 +21,8 @@ import { AllTables } from './components/allTables/allTables.component';
 import { AllTablesService } from './components/allTables/allTables.service';
 import { AddTable } from './components/addTable/addTable.component';
 import { AddTableService } from './components/addTable/addTable.service';
+import { ChangeTable } from './components/changeTable/changeTable.component';
+import { ChangeTableService } from './components/changeTable/changeTable.service';
 import { GeneralTable } from './components/allTables/components/generalTable';
 import { SmartTables } from './components/smartTables/smartTables.component';
 import { SmartTablesService } from './components/smartTables/smartTables.service';
@@ -72,6 +74,7 @@ import { Ng2SmartTableModule } from 'ng2-smart-table';
     SportDemoComponent,
     SheetDemoComponent,
     GeneralTable,
+    ChangeTable,
   ],
   providers: [
     BasicTablesService,
@@ -79,6 +82,7 @@ import { Ng2SmartTableModule } from 'ng2-smart-table';
     DataTablesService,
     AllTablesService,
     AddTableService,
+    ChangeTableService,
   ],
 })
 export class TablesModule {

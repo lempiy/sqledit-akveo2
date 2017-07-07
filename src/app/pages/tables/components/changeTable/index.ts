@@ -1,1 +1,1 @@
-export * from './addTable.component';
+export * from './changeTable.component';
