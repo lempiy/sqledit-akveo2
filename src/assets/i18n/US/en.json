@@ -36,6 +36,8 @@
       "form_layouts": "Form Layouts",
       "tables": "Tables",
       "basic_tables": "Basic Tables",
+      "all_tables": "All Tables",
+      "add_table": "Add Table",
       "smart_tables": "Smart Tables",
       "maps": "Maps",
       "google_maps": "Google Maps",

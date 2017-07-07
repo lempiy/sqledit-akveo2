@@ -3,8 +3,8 @@ import { CommonModule }  from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgaModule } from '../../theme/nga.module';
 
-import { Register } from './register.component';
-import { routing }       from './register.routing';
+import { Database } from './database.component';
+import { routing }       from './database.routing';
 
 
 @NgModule({
@@ -16,7 +16,7 @@ import { routing }       from './register.routing';
     routing
   ],
   declarations: [
-    Register
+    Database
   ]
 })
-export class RegisterModule {}
+export class DatabaseModule {}

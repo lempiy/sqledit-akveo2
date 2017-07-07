@@ -1,0 +1,28 @@
+<div class="vertical">
+  <table class="table table-striped">
+    <thead>
+    <tr>
+      <th class="table-id">#</th>
+      <th>Table Name</th>
+      <th>Columns</th>
+      <th>Indexes</th>
+      <th>Views</th>
+      <th>Delete</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let item of tableData">
+      <td class="table-id">{{ item.id }}</td>
+      <td><a class="email-link" title="Change" href="#">{{ item.tableName }}</a></td>
+      <td><a class="email-link" title="Change" href="#">{{ item.columns }}</a></td>
+      <td><a class="email-link" title="Change" href="#">{{ item.indexes }}</a></td>
+      <td><a class="email-link" title="Change" href="#">{{ item.views }}</a></td>
+      <td>
+        <button class="btn btn-xs btn-danger" type="button" title="Show DDL">
+          Drop
+        </button>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>

@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { NgaModule } from '../../theme/nga.module';
-import { Ng2SmartTableModule } from 'ng2-smart-table';
 import { DataTableModule } from "angular2-datatable";
 import { HttpModule } from "@angular/http";
 import { DataFilterPipe } from './components/dataTables/data-filter.pipe';
@@ -18,6 +17,11 @@ import { BorderedTable } from './components/basicTables/components/borderedTable
 import { HoverTable } from './components/basicTables/components/hoverTable';
 import { CondensedTable } from './components/basicTables/components/condensedTable';
 import { ContextualTable } from './components/basicTables/components/contextualTable';
+import { AllTables } from './components/allTables/allTables.component';
+import { AllTablesService } from './components/allTables/allTables.service';
+import { AddTable } from './components/addTable/addTable.component';
+import { AddTableService } from './components/addTable/addTable.service';
+import { GeneralTable } from './components/allTables/components/generalTable';
 import { SmartTables } from './components/smartTables/smartTables.component';
 import { SmartTablesService } from './components/smartTables/smartTables.service';
 import { DataTables } from './components/dataTables/dataTables.component';
@@ -31,6 +35,8 @@ import { FinanceDemoComponent } from './components/hotTables/handsontable/financ
 import { ScienceDemoComponent } from './components/hotTables/handsontable/science-demo';
 import { SportDemoComponent } from './components/hotTables/handsontable/sport-demo';
 import { AdvancedDemoComponent } from './components/hotTables/handsontable/advanced-demo';
+import { Ng2SmartTableModule } from 'ng2-smart-table';
+
 
 @NgModule({
   imports: [
@@ -41,7 +47,7 @@ import { AdvancedDemoComponent } from './components/hotTables/handsontable/advan
     Ng2SmartTableModule,
     DataTableModule,
     HttpModule,
-    HotTableModule
+    HotTableModule,
   ],
   declarations: [
     Tables,
@@ -52,6 +58,8 @@ import { AdvancedDemoComponent } from './components/hotTables/handsontable/advan
     StripedTable,
     ContextualTable,
     ResponsiveTable,
+    AllTables,
+    AddTable,
     SmartTables,
     DataTables,
     DataFilterPipe,
@@ -62,13 +70,16 @@ import { AdvancedDemoComponent } from './components/hotTables/handsontable/advan
     FinanceDemoComponent,
     ScienceDemoComponent,
     SportDemoComponent,
-    SheetDemoComponent
+    SheetDemoComponent,
+    GeneralTable,
   ],
   providers: [
     BasicTablesService,
     SmartTablesService,
-    DataTablesService
-  ]
+    DataTablesService,
+    AllTablesService,
+    AddTableService,
+  ],
 })
 export class TablesModule {
 }

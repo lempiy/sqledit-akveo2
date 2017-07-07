@@ -185,18 +185,26 @@ export const PAGES_MENU = [
         },
         children: [
           {
-            path: 'basictables',
+            path: 'alltables',
             data: {
               menu: {
-                title: 'general.menu.basic_tables',
+                title: 'general.menu.all_tables',
               }
             }
           },
           {
-            path: 'smarttables',
+            path: 'addtable',
             data: {
               menu: {
-                title: 'general.menu.smart_tables',
+                title: 'general.menu.add_table',
+              }
+            }
+          },
+          {
+            path: 'basictables',
+            data: {
+              menu: {
+                title: 'general.menu.basic_tables',
               }
             }
           },
@@ -285,7 +293,7 @@ export const PAGES_MENU = [
             }
           },
           {
-            path: ['/register'],
+            path: ['/database'],
             data: {
               menu: {
                 title: 'general.menu.register'

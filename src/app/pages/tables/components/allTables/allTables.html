@@ -1,0 +1,15 @@
+<div class="widgets">
+
+  <div class="row">
+    <ba-card title="Tables of db_test" baCardClass="with-scroll" class="smart-table-container">
+      <general-table [tableData]='allTableData'></general-table>
+      <a 
+        class="btn btn-success btn-with-icon add-btn" 
+        title="Create a New Table"
+        [routerLink]="['/pages/tables/addtable']">
+        <i class="ion-plus-round"></i>
+        Add Table
+      </a>
+    </ba-card>
+  </div>
+</div>

@@ -1,0 +1,25 @@
+<div class="widgets">
+
+  <div class="row">
+    <ba-card title="Create new table in test_db" baCardClass="with-scroll" class="smart-table-container">
+      <div class="form-group">
+        <label for="input01">Table name</label>
+        <input 
+          class="form-control" 
+          id="input01" 
+          placeholder="Example: order" 
+          type="text"
+          #inputNameElement
+          [(ngModel)]="allTableData.name">
+      </div>
+      <ng2-smart-table [settings]="settings" [source]="source" (deleteConfirm)="onDeleteConfirm($event)"></ng2-smart-table>
+      <button 
+        class="btn btn-success btn-with-icon submit-btn btn pull-right" 
+        type="button"
+        (click)="onSubmit()"
+        title="Submit new table">
+        <i class="ion-android-checkmark-circle"></i>Submit
+      </button>
+    </ba-card>
+  </div>
+</div>
