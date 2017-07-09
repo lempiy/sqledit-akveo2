@@ -3,10 +3,9 @@
     <thead>
     <tr>
       <th class="table-id">#</th>
+      <th>Name</th>
       <th>Table Name</th>
-      <th>Columns</th>
-      <th>Indexes</th>
-      <th>Views</th>
+      <th>SQL</th>
       <th>Delete</th>
     </tr>
     </thead>
@@ -17,7 +16,7 @@
         <a 
           class="email-link" 
           title="Change" 
-          [routerLink]="['/pages/tables/changetable', item.name]">
+          [routerLink]="['/pages/views/changeview', item.name]">
             {{ item.name }}
           </a>
       </td>
@@ -25,26 +24,20 @@
         <a 
           class="email-link" 
           title="Change" 
-          [routerLink]="['/pages/tables/changetable', item.name]">
-          {{ item.columns }}
+          [routerLink]="['/pages/tables/changetable', item.table_name]">
+          {{ item.table_name }}
         </a>
       </td>
       <td>
         <a 
           class="email-link" 
           title="Change" 
-          [routerLink]="['/pages/tables/indexes', item.name]">{{ item.indexes }}
+          [routerLink]="['/pages/views/changeview', item.name]">
+          <p>{{ item.sql }}</p>
         </a>
       </td>
       <td>
-        <a 
-          class="email-link" 
-          title="Change" 
-          [routerLink]="['/pages/views/table', item.name]">{{ item.views }}
-        </a>
-      </td>
-      <td>
-        <button class="btn btn-xs btn-danger" type="button" title="Show DDL">
+        <button class="btn btn-xs btn-danger" type="button" title="Drop View">
           Drop
         </button>
       </td>

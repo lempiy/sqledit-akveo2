@@ -1,0 +1,32 @@
+<div class="widgets">
+  <div class="row">
+    <ba-card title="Change view in test_db" baCardClass="with-scroll" class="smart-table-container">
+      <div class="form-group">
+        <label for="input01">View name</label>
+        <input 
+          class="form-control" 
+          id="input01" 
+          placeholder="Example: Premium Orders" 
+          type="text"
+          #inputNameElement
+          [(ngModel)]="changeViewData.name">
+      </div>
+      <div class="form-group">
+          <label for="textarea01">SQL</label>
+          <textarea 
+            class="form-control" 
+            id="textarea01"
+            [(ngModel)]="changeViewData.sql"
+            placeholder="Type new view definition here...">
+            </textarea>
+      </div>
+      <button 
+        class="btn btn-success btn-with-icon submit-btn btn pull-right" 
+        type="button"
+        (click)="onSubmit()"
+        title="Submit new view">
+        <i class="ion-android-checkmark-circle"></i>Submit
+      </button>
+    </ba-card>
+  </div>
+</div>

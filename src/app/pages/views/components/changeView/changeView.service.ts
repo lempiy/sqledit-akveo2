@@ -1,22 +1,22 @@
 import { Injectable } from '@angular/core';
-import { TablesService } from '../../tables.service';
+import { ViewsService } from '../../views.service';
 
 @Injectable()
-export class AddTableService {
-  
-  addTableData = {
+export class ChangeViewService {
+
+  changeViewData = {
     name: '',
-    data: [],
+    sql: '',
   };
 
-  constructor(protected _tables: TablesService) {
+  constructor(protected _tables: ViewsService) {
 
   }
-  
+
   getData(): Promise<any> {
     return new Promise((resolve, reject) => {
       // setTimeout(() => {
-        resolve(this.addTableData);
+        resolve(this._tables.selectedView);
       // }, 2000);
     });
   }

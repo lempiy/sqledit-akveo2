@@ -23,11 +23,15 @@ import { AddTable } from './components/addTable/addTable.component';
 import { AddTableService } from './components/addTable/addTable.service';
 import { ChangeTable } from './components/changeTable/changeTable.component';
 import { ChangeTableService } from './components/changeTable/changeTable.service';
+import { TableIndexes } from './components/tableIndexes/tableIndexes.component';
+import { TableIndexesService } from './components/tableIndexes/tableIndexes.service';
 import { GeneralTable } from './components/allTables/components/generalTable';
+import { IndexesTable } from './components/tableIndexes/components/indexesTable';
 import { SmartTables } from './components/smartTables/smartTables.component';
 import { SmartTablesService } from './components/smartTables/smartTables.service';
 import { DataTables } from './components/dataTables/dataTables.component';
 import { DataTablesService } from './components/dataTables/dataTables.service';
+import { TablesService } from './tables.service';
 
 import { HotTablesComponent } from './components/hotTables/hotTables.component';
 import { HandsontableSectionComponent } from './components/hotTables/handsontable-section';
@@ -75,6 +79,8 @@ import { Ng2SmartTableModule } from 'ng2-smart-table';
     SheetDemoComponent,
     GeneralTable,
     ChangeTable,
+    TableIndexes,
+    IndexesTable,
   ],
   providers: [
     BasicTablesService,
@@ -83,6 +89,8 @@ import { Ng2SmartTableModule } from 'ng2-smart-table';
     AllTablesService,
     AddTableService,
     ChangeTableService,
+    TablesService,
+    TableIndexesService,
   ],
 })
 export class TablesModule {

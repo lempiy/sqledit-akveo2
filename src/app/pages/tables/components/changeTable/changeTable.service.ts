@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { TablesService } from '../../tables.service';
 
 @Injectable()
 export class ChangeTableService {
@@ -8,10 +9,14 @@ export class ChangeTableService {
     data: [],
   };
 
+  constructor(protected _tables: TablesService) {
+
+  }
+
   getData(): Promise<any> {
     return new Promise((resolve, reject) => {
       // setTimeout(() => {
-        resolve(this.changeTableData);
+        resolve(this._tables.selectedTable);
       // }, 2000);
     });
   }

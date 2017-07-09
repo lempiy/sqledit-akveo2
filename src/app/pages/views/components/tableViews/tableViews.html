@@ -1,0 +1,15 @@
+<div class="widgets">
+
+  <div class="row">
+    <ba-card title="Views of table {{'user'}} db_test" baCardClass="with-scroll" class="smart-table-container">
+      <general-table [tableData]='allViewData'></general-table>
+      <a 
+        class="btn btn-success btn-with-icon add-btn" 
+        title="Create a New Table"
+        [routerLink]="['/pages/tables/addview']">
+        <i class="ion-plus-round"></i>
+        Add View
+      </a>
+    </ba-card>
+  </div>
+</div>

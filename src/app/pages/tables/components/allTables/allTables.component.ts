@@ -15,7 +15,12 @@ export class AllTables {
 
   constructor(protected service: AllTablesService) {
     this.service.getData().then((data) => {
-      this.allTableData = data;
+      this.allTableData = data.map(table => ({
+        name: table.name,
+        columns: table.columns ? table.columns.length : 0,
+        indexes: table.indexes ? table.indexes.length : 0,
+        views: table.views ? table.views.length : 0,
+      }));
     });
   }
 

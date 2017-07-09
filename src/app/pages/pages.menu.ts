@@ -201,6 +201,26 @@ export const PAGES_MENU = [
             }
           },
           {
+            path: 'changetable',
+            data: {
+              menu: {
+                title: 'general.menu.change_table',
+                pathMatch: 'prefix',
+                hidden: true,
+              }
+            }
+          },
+          {
+            path: 'indexes',
+            data: {
+              menu: {
+                title: 'general.menu.indexes',
+                pathMatch: 'prefix',
+                hidden: true,
+              }
+            }
+          },
+          {
             path: 'basictables',
             data: {
               menu: {
@@ -224,6 +244,56 @@ export const PAGES_MENU = [
                }
              }
            }
+        ]
+      },
+      {
+        path: 'views',
+        data: {
+          menu: {
+            title: 'general.menu.views',
+            icon: 'ion-grid',
+            selected: false,
+            expanded: false,
+            order: 500,
+          }
+        },
+        children: [
+          {
+            path: 'allviews',
+            data: {
+              menu: {
+                title: 'general.menu.all_views',
+              }
+            }
+          },
+          {
+            path: 'addview',
+            data: {
+              menu: {
+                title: 'general.menu.add_view',
+              }
+            }
+          },
+          {
+            path: 'changeview',
+            data: {
+              menu: {
+                title: 'general.menu.change_view',
+                pathMatch: 'prefix',
+                hidden: true,
+              }
+            }
+          },
+          {
+            path: 'table',
+            data: {
+              menu: {
+                title: 'general.menu.table_views',
+                pathMatch: 'prefix',
+                hidden: true,
+              }
+            }
+          },
         ]
       },
       {

@@ -1,20 +1,20 @@
-import { Component, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 
-import { ChangeTableService } from './changeTable.service';
+import { AddViewService } from './addView.service';
 import { LocalDataSource } from 'ng2-smart-table';
 
 @Component({
-  selector: 'change-table',
-  templateUrl: './changeTable.html',
-  styleUrls: ['./changeTable.scss']
+  selector: 'add-view',
+  templateUrl: './addView.html',
+  styleUrls: ['./addView.scss']
 })
-export class ChangeTable implements AfterViewInit {
+export class AddView implements AfterViewInit {
 
   query: string = '';
 
-  allTableData: any = {
+  allViewData: any = {
     name: '',
-    columns: [],
+    data: [],
   };
 
   sqlColumnTypes = [
@@ -58,7 +58,7 @@ export class ChangeTable implements AfterViewInit {
         title: 'Name',
         type: 'string'
       },
-      type: {
+      fieldType: {
         title: 'Field Type',
         editor: {
           type: 'list',
@@ -81,15 +81,17 @@ export class ChangeTable implements AfterViewInit {
   };
 
   source: LocalDataSource = new LocalDataSource();
+  @ViewChild('inputNameElement') inputNameElement: ElementRef;
   
-  constructor(protected service: ChangeTableService) {
+  constructor(protected service: AddViewService) {
     this.service.getData().then((data) => {
-      this.allTableData = Object.assign(this.allTableData, data);
-      this.source.load(data.columns);
+      this.allViewData = Object.assign(this.allViewData, data);
+      this.source.load(data.data);
     });
   }
 
   ngAfterViewInit() {
+    (<HTMLInputElement>this.inputNameElement.nativeElement).focus();
   }
 
   onDeleteConfirm(event): void {
@@ -102,7 +104,7 @@ export class ChangeTable implements AfterViewInit {
   onSubmit(): void {
     this.source.getAll().then(data => {
       console.log({
-        name: this.allTableData.name,
+        name: this.allViewData.name,
         columns: data,
       })
     })
