@@ -76,7 +76,12 @@ export class AddTable implements AfterViewInit {
             list: this.sqlColumnTypes,
           },
         },
-      }
+      },
+      ddl: {
+        title: 'DDL',
+        selectText: 'Example: UNIQUE NOT NULL',
+        type: 'string',
+      },
     }
   };
 
