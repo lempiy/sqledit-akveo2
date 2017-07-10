@@ -61,19 +61,23 @@ export class ChangeTable implements AfterViewInit {
       type: {
         title: 'Field Type',
         editor: {
-          type: 'list',
+          type: 'completer',
           config: {
-            list: this.sqlColumnTypes,
             completer: {
-              titleField: 'BIGINT',
-            }
+              data: this.sqlColumnTypes,
+              titleField: 'title',
+              searchFields: 'value',
+            },
           },
         },
         filter: {
-          type: 'list',
+          type: 'completer',
           config: {
-            selectText: 'Data type...',
-            list: this.sqlColumnTypes,
+            completer: {
+              data: this.sqlColumnTypes,
+              titleField: 'title',
+              searchFields: 'value',
+            },
           },
         },
       }

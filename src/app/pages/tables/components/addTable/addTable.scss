@@ -33,6 +33,30 @@
       line-height: 1.5 !important;
     }
 
+    .completer-input {
+      border: 1px solid rgba(255, 255, 255, 0.6);
+      border-radius: 5px;
+      background-color: rgba(255, 255, 255, 0.1);
+      box-shadow: none;
+      background-image: none;
+      background-clip: padding-box;
+      display: block;
+      transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
+      color: #fff
+    }
+
+    .completer-input::placeholder {
+      color: #fff
+    }
+
+    ng2-completer {
+      .completer-input {
+          width: 100%;
+          line-height: 1.5;
+          padding: .375rem .75rem;
+      }
+    }
+
     ng2-smart-table-cell {
       color: $default-text;
       line-height: 35px;

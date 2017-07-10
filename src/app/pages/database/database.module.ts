@@ -4,6 +4,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgaModule } from '../../theme/nga.module';
 
 import { Database } from './database.component';
+import { DatabaseService } from './database.service';
 import { routing }       from './database.routing';
 
 
@@ -17,6 +18,9 @@ import { routing }       from './database.routing';
   ],
   declarations: [
     Database
+  ],
+  providers: [
+    DatabaseService,
   ]
 })
 export class DatabaseModule {}

@@ -1,0 +1,23 @@
+<div class="widgets">
+
+  <div class="row">
+    <ba-card title="Execute query in in test_db" baCardClass="with-scroll" class="smart-table-container">
+      <div class="form-group">
+          <label for="textarea01">SQL</label>
+          <textarea 
+            class="form-control" 
+            id="textarea01"
+            [(ngModel)]="query"
+            placeholder="Type your SQL statement here...">
+          </textarea>
+      </div>
+      <button 
+        class="btn btn-success btn-with-icon submit-btn btn pull-right" 
+        type="button"
+        (click)="onSubmit()"
+        title="Submit query">
+        <i class="ion-android-checkmark-circle"></i>Execute
+      </button>
+    </ba-card>
+  </div>
+</div>

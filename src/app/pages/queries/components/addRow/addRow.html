@@ -1,0 +1,53 @@
+<div class="widgets">
+  <div class="row">
+    <ba-card title="Add row in test_db" baCardClass="with-scroll" class="smart-table-container">
+      <div class="form-group">
+        <label for="input01">Table name</label>
+        <select 
+          class="form-control" 
+          id="input01" 
+          type="text"
+          [(ngModel)]="addRowData.name">
+          <option value="" disabled selected hidden>Chose table...</option>
+          <option *ngFor="let table of allTables" [(ngValue)]="table.name">{{table.name}}</option>
+        </select>
+      </div>
+      <div *ngIf="tablesHash[addRowData.name]">
+        <div class="row">
+          <div class="col-md-6">
+              <label for="input01">Column name</label>
+            </div>
+            <div class="col-md-6">
+              <label for="input01">Value</label>
+            </div>
+        </div>
+        <div class="form-group row" 
+          *ngFor="let column of tablesHash[addRowData.name].columns">
+            <div class="col-md-6">
+              <input 
+                class="form-control" 
+                id="input01"
+                [ngModel]="column.name" 
+                disabled
+                type="text">
+            </div>
+            <div class="col-md-6">
+              <input 
+                class="form-control" 
+                id="input01" 
+                placeholder="{{column.type}}"
+                [(ngModel)]="column.input" 
+                type="text">
+            </div>
+        </div>
+      </div>
+      <button 
+        class="btn btn-success btn-with-icon submit-btn btn pull-right" 
+        type="button"
+        (click)="onSubmit()"
+        title="Submit new view">
+        <i class="ion-android-checkmark-circle"></i>Submit
+      </button>
+    </ba-card>
+  </div>
+</div>

@@ -1,0 +1,66 @@
+<div class="widgets">
+  <div class="row">
+    <ba-card title="Update row in test_db" baCardClass="with-scroll" class="smart-table-container">
+      <div class="form-group">
+        <label for="input01">Table name</label>
+        <select 
+          class="form-control" 
+          id="input01" 
+          type="text"
+          [(ngModel)]="updateRowData.name">
+          <option value="" disabled selected hidden>Chose table...</option>
+          <option *ngFor="let table of allTables" [(ngValue)]="table.name">{{table.name}}</option>
+        </select>
+      </div>
+      <div *ngIf="tablesHash[updateRowData.name]">
+        <div class="row">
+          <div class="col-md-6">
+              <label for="input01">Column name</label>
+            </div>
+            <div class="col-md-6">
+              <label for="input01">Value</label>
+            </div>
+        </div>
+        <div class="form-group row" 
+          *ngFor="let column of tablesHash[updateRowData.name].columns">
+            <div class="col-md-6">
+              <input 
+                class="form-control" 
+                id="input01"
+                [ngModel]="column.name" 
+                disabled
+                type="text">
+            </div>
+            <div class="col-md-6">
+              <input 
+                class="form-control" 
+                id="input01" 
+                placeholder="{{column.type}}"
+                [(ngModel)]="column.input" 
+                type="text">
+            </div>
+        </div>
+        <div class="input-group">
+          <span 
+            class="input-group-addon input-group-addon-primary addon-left" 
+            id="basic-addon1">
+              WHERE
+          </span>
+          <input 
+            aria-describedby="basic-addon1" 
+            class="form-control with-primary-addon" 
+            placeholder="SQL condition..." 
+            [(ngModel)]="updateRowData.where"
+            type="text">
+        </div>
+      </div>
+      <button 
+        class="btn btn-success btn-with-icon submit-btn btn pull-right" 
+        type="button"
+        (click)="onSubmit()"
+        title="Submit new view">
+        <i class="ion-android-checkmark-circle"></i>Update
+      </button>
+    </ba-card>
+  </div>
+</div>

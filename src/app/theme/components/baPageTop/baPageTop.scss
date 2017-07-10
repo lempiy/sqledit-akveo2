@@ -15,6 +15,29 @@
 
     .dropdown-toggle::after {
       display: none;
+      font-family: $font-family;
+    }
+    
+    .database-info {
+      margin: 25px 0 0 0;
+      font-size: 16px;
+
+      a {
+        color: $primary-light;
+        margin-right: 5px;
+      }
+
+      a:hover {
+        color: $primary;
+      }
+
+      i {
+        margin-right: 5px;
+      }
+
+      .db-name {
+        color: #fff
+      }
     }
   }
 

@@ -1,0 +1,39 @@
+<div class="widgets">
+  <div class="row">
+    <ba-card title="Delete row in test_db" baCardClass="with-scroll" class="smart-table-container">
+      <div class="form-group">
+        <label for="input01">Table name</label>
+        <select 
+          class="form-control" 
+          id="input01" 
+          type="text"
+          [(ngModel)]="deleteRowData.name">
+          <option value="" disabled selected hidden>Chose table...</option>
+          <option *ngFor="let table of allTables" [(ngValue)]="table.name">{{table.name}}</option>
+        </select>
+      </div>
+      <div *ngIf="tablesHash[deleteRowData.name]">
+        <div class="input-group">
+          <span 
+            class="input-group-addon input-group-addon-primary addon-left" 
+            id="basic-addon1">
+              WHERE
+          </span>
+          <input 
+            aria-describedby="basic-addon1" 
+            class="form-control with-primary-addon" 
+            placeholder="SQL condition..." 
+            [(ngModel)]="deleteRowData.where"
+            type="text">
+        </div>
+      </div>
+      <button 
+        class="btn btn-success btn-with-icon submit-btn btn pull-right" 
+        type="button"
+        (click)="onSubmit()"
+        title="Submit new view">
+        <i class="ion-android-checkmark-circle"></i>Delete
+      </button>
+    </ba-card>
+  </div>
+</div>

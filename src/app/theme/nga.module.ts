@@ -53,6 +53,10 @@ import {
 } from './services';
 
 import {
+  DatabaseService
+} from '../pages/database/database.service';
+
+import {
   EmailValidator,
   EqualPasswordsValidator
 } from './validators';
@@ -128,7 +132,8 @@ export class NgaModule {
         BaThemeConfigProvider,
         BaThemeConfig,
         ...NGA_VALIDATORS,
-        ...NGA_SERVICES
+        ...NGA_SERVICES,
+        DatabaseService,
       ],
     };
   }

@@ -34,6 +34,7 @@ export class AddTable implements AfterViewInit {
     { value: 'STRING', title: 'STRING' },
     { value: 'TEXT', title: 'TEXT' },
     { value: 'TIME', title: 'TIME' },
+    { value: 'FLOAT', title: 'FLOAT' },
     { value: 'VARCHAR', title: 'VARCHAR' },
   ];
 
@@ -56,29 +57,26 @@ export class AddTable implements AfterViewInit {
     columns: {
       name: {
         title: 'Name',
+        filter: false,
         type: 'string'
       },
       fieldType: {
         title: 'Field Type',
+        filter: false,
         editor: {
-          type: 'list',
+          type: 'completer',
           config: {
-            list: this.sqlColumnTypes,
             completer: {
-              titleField: 'BIGINT',
-            }
-          },
-        },
-        filter: {
-          type: 'list',
-          config: {
-            selectText: 'Data type...',
-            list: this.sqlColumnTypes,
+              data: this.sqlColumnTypes,
+              titleField: 'title',
+              searchFields: 'value',
+            },
           },
         },
       },
       ddl: {
         title: 'DDL',
+        filter: false,
         selectText: 'Example: UNIQUE NOT NULL',
         type: 'string',
       },
