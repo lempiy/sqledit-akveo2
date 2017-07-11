@@ -1,7 +1,6 @@
 import { Routes, RouterModule } from '@angular/router';
 
 import { Queries } from './queries.component';
-import { AllViews } from './components/allViews/allViews.component';
 import { ExecuteQuery } from './components/executeQuery/executeQuery.component';
 import { AddRow } from './components/addRow/addRow.component';
 import { UpdateRow } from './components/updateRow/updateRow.component';

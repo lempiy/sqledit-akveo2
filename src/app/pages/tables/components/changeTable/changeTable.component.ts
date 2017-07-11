@@ -72,7 +72,7 @@ export class ChangeTable implements AfterViewInit {
       confirmDelete: true,
     },
     pager: {
-      display: false,
+      perPage: 15,
     },
     noDataMessage: 'No columns',
     columns: {

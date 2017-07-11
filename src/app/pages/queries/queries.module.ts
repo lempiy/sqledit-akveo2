@@ -7,8 +7,6 @@ import { HttpModule } from "@angular/http";
 
 import { routing } from './queries.routing';
 import { Queries } from './queries.component';
-import { AllViews } from './components/allViews/allViews.component';
-import { AllViewsService } from './components/allViews/allViews.service';
 import { ExecuteQuery } from './components/executeQuery/executeQuery.component';
 import { ExecuteQueryService } from './components/executeQuery/executeQuery.service';
 import { AddRow } from './components/addRow/addRow.component';
@@ -17,7 +15,6 @@ import { DeleteRow } from './components/deleteRow/deleteRow.component';
 import { DeleteRowService } from './components/deleteRow/deleteRow.service';
 import { UpdateRow } from './components/updateRow/updateRow.component';
 import { UpdateRowService } from './components/updateRow/updateRow.service';
-import { GeneralView } from './components/allViews/components/generalView';
 import { QueriesService } from './queries.service';
 import { TablesService } from '../tables/tables.service';
 
@@ -36,15 +33,12 @@ import { Ng2SmartTableModule } from 'ng2-smart-table';
   ],
   declarations: [
     Queries,
-    AllViews,
     ExecuteQuery,
-    GeneralView,
     AddRow,
     UpdateRow,
     DeleteRow,
   ],
   providers: [
-    AllViewsService,
     ExecuteQueryService,
     AddRowService,
     QueriesService,

@@ -12,7 +12,7 @@ export class TableIndexes {
 
   query: string = '';
   private sub: any;
-  private tabName: string;
+  tabName: string;
 
   tableIndexesData: any[];
 
