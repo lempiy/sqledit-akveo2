@@ -1,0 +1,12 @@
+<div 
+    class="alert" 
+    [class.hidden]="!status"
+    [class.alert-success]="status == 'success'"
+    [class.alert-danger]="status == 'fail'"  
+    role="alert">
+    <i class="ion-close-round close-icon" (click)="close()" title="Close"></i>
+    <strong>{{status == 'success' ? 'Success' : 'Error'}}:</strong> {{message}}
+    <ul *ngIf="status == 'fail' && violations">
+        <li *ngFor="let error of violations;">{{error}}</li>
+    </ul>
+</div>

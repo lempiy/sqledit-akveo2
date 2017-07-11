@@ -1,0 +1,42 @@
+@import '../../sass/conf/conf';
+
+.alert {
+    margin-top: 1em;
+    margin-bottom: 0;
+    animation: fadeAlert 0.3s ease-in;
+    position: relative;
+
+    .close-icon {
+        position: absolute;
+        top: 7px;
+        right: 7px;
+        cursor: pointer;
+    }
+
+    ul {
+        font-size: 12px;
+        margin-top: 5px;
+        margin-bottom: 0;
+    }
+}
+
+.alert-success {
+    .close-icon {
+        color: $success-dark;
+    }
+}
+
+.alert-danger {
+    .close-icon {
+        color: $danger-dark;
+    }
+}
+
+.hidden {
+    display: none;
+}
+
+@keyframes fadeAlert {
+    from {opacity: 0;}
+    to {opacity: 1;}
+}

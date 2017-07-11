@@ -11,6 +11,20 @@ export class AllTables {
 
   query: string = '';
 
+  result: any = {
+    status: '',
+    violations: [],
+    message: '',
+  };
+
+  clearResult() {
+    this.result = {
+      status: '',
+      violations: [],
+      message: '',
+    };
+  } 
+
   allTableData: any[];
 
   constructor(protected service: AllTablesService) {
@@ -24,11 +38,13 @@ export class AllTables {
     });
   }
 
-  onDeleteConfirm(event): void {
-    if (window.confirm('Are you sure you want to delete?')) {
-      event.confirm.resolve();
-    } else {
-      event.confirm.reject();
-    }
+  deleteTable($event) {
+    this.allTableData.splice(
+      this.allTableData.findIndex(table => table.name === $event.name), 
+    1);
+    Object.assign(this.result, {
+      status: 'success',
+      message: `Table ${$event.name} was deleted.`,
+    })
   }
 }

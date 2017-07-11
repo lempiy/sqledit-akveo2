@@ -12,6 +12,20 @@ export class ChangeTable implements AfterViewInit {
 
   query: string = '';
 
+  result: any = {
+    status: '',
+    violations: [],
+    message: '',
+  };
+
+  clearResult() {
+    this.result = {
+      status: '',
+      violations: [],
+      message: '',
+    };
+  } 
+
   allTableData: any = {
     name: '',
     columns: [],
@@ -108,6 +122,10 @@ export class ChangeTable implements AfterViewInit {
       console.log({
         name: this.allTableData.name,
         columns: data,
+      });
+      Object.assign(this.result, {
+        status: 'success',
+        message: `Table ${this.allTableData.name} has been changed.`,
       })
     })
   }

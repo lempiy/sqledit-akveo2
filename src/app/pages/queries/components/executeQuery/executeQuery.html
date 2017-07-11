@@ -11,6 +11,12 @@
             placeholder="Type your SQL statement here...">
           </textarea>
       </div>
+      <sy-status 
+        [status]="result.status"
+        [message]="result.message"
+        [violations]="result.violations"
+        (clearMessage)="clearResult()">
+      </sy-status>
       <button 
         class="btn btn-success btn-with-icon submit-btn btn pull-right" 
         type="button"

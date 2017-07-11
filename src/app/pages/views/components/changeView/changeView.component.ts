@@ -11,6 +11,20 @@ export class ChangeView implements AfterViewInit {
 
   query: string = '';
 
+  result: any = {
+    status: '',
+    violations: [],
+    message: '',
+  };
+
+  clearResult() {
+    this.result = {
+      status: '',
+      violations: [],
+      message: '',
+    };
+  }
+
   changeViewData: any = {
     name: '',
     sql: '',
@@ -27,5 +41,9 @@ export class ChangeView implements AfterViewInit {
 
   onSubmit(): void {
       console.log(this.changeViewData)
+      Object.assign(this.result, {
+        status: 'success',
+        message: `View ${this.changeViewData.name} has been changed.`,
+      })
   }
 }

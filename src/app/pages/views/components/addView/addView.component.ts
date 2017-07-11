@@ -17,6 +17,20 @@ export class AddView implements AfterViewInit {
     data: [],
   };
 
+  result: any = {
+    status: '',
+    violations: [],
+    message: '',
+  };
+
+  clearResult() {
+    this.result = {
+      status: '',
+      violations: [],
+      message: '',
+    };
+  }
+
   sqlColumnTypes = [
     { value: 'BIGINT', title: 'BIGINT' },
     { value: 'BLOB', title: 'BLOB' }, 
@@ -106,6 +120,10 @@ export class AddView implements AfterViewInit {
       console.log({
         name: this.allViewData.name,
         columns: data,
+      })
+      Object.assign(this.result, {
+        status: 'success',
+        message: `View ${this.allViewData.name} has been created.`,
       })
     })
   }

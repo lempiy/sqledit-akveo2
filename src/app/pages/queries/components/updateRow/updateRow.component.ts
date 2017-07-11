@@ -16,7 +16,21 @@ export class UpdateRow implements AfterViewInit {
     name: '',
     where: '',
   };
-  
+
+  result: any = {
+    status: '',
+    violations: [],
+    message: '',
+  };
+
+  clearResult() {
+    this.result = {
+      status: '',
+      violations: [],
+      message: '',
+    };
+  }
+
   constructor(protected service: UpdateRowService) {
     this.service.getData().then((data) => {
       this.allTables = Object.assign(this.allTables, data);
@@ -39,5 +53,9 @@ export class UpdateRow implements AfterViewInit {
       value: item.input,
     }));
     console.log(data)
+    Object.assign(this.result, {
+      status: 'success',
+      message: `Succcesfully updated row in table ${this.updateRowData.name}.`,
+    })
   }
 }

@@ -15,6 +15,21 @@ export class AddRow implements AfterViewInit {
   addRowData: any = {
     name: '',
   };
+
+  result: any = {
+    status: '',
+    violations: [],
+    message: '',
+  };
+
+  clearResult() {
+    this.result = {
+      status: '',
+      violations: [],
+      message: '',
+    };
+  }
+
   
   constructor(protected service: AddRowService) {
     this.service.getData().then((data) => {
@@ -36,5 +51,9 @@ export class AddRow implements AfterViewInit {
       value: item.input,
     }));
     console.log(data)
+    Object.assign(this.result, {
+      status: 'success',
+      message: `Succcesfully added row to table ${this.addRowData.name}.`,
+    })
   }
 }

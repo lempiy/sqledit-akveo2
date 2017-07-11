@@ -11,6 +11,20 @@ export class AllViews {
 
   query: string = '';
 
+  result: any = {
+    status: '',
+    violations: [],
+    message: '',
+  };
+
+  clearResult() {
+    this.result = {
+      status: '',
+      violations: [],
+      message: '',
+    };
+  } 
+
   allViewData: any[];
 
   constructor(protected service: AllViewsService) {
@@ -19,11 +33,13 @@ export class AllViews {
     });
   }
 
-  onDeleteConfirm(event): void {
-    if (window.confirm('Are you sure you want to delete?')) {
-      event.confirm.resolve();
-    } else {
-      event.confirm.reject();
-    }
+  deleteView($event) {
+    this.allViewData.splice(
+      this.allViewData.findIndex(view => view.name === $event.name), 
+    1);
+    Object.assign(this.result, {
+      status: 'success',
+      message: `View ${$event.name} was deleted.`,
+    })
   }
 }

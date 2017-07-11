@@ -12,6 +12,20 @@ export class AddTable implements AfterViewInit {
 
   query: string = '';
 
+  result: any = {
+    status: '',
+    violations: [],
+    message: '',
+  };
+
+  clearResult() {
+    this.result = {
+      status: '',
+      violations: [],
+      message: '',
+    };
+  } 
+
   allTableData: any = {
     name: '',
     data: [],
@@ -109,6 +123,14 @@ export class AddTable implements AfterViewInit {
       console.log({
         name: this.allTableData.name,
         columns: data,
+      })
+      Object.assign(this.result, {
+        status: 'fail',
+        message: `Table ${this.allTableData.name} was not created.`,
+        violations: [
+          'Wrong DDL data',
+          'Table with such name already exists.',
+        ],
       })
     })
   }

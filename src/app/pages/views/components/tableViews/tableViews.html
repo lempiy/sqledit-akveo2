@@ -2,11 +2,20 @@
 
   <div class="row">
     <ba-card title="Views of table {{'user'}} db_test" baCardClass="with-scroll" class="smart-table-container">
-      <general-table [tableData]='allViewData'></general-table>
+      <general-table 
+        (deleteView)='deleteView($event)'
+        [tableData]='allViewData'>
+      </general-table>
+      <sy-status 
+        [status]="result.status"
+        [message]="result.message"
+        [violations]="result.violations"
+        (clearMessage)="clearResult()">
+      </sy-status>
       <a 
         class="btn btn-success btn-with-icon add-btn" 
         title="Create a New Table"
-        [routerLink]="['/pages/tables/addview']">
+        [routerLink]="['/pages/views/addview']">
         <i class="ion-plus-round"></i>
         Add View
       </a>

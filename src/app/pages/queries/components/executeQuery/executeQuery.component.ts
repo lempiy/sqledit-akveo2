@@ -11,6 +11,20 @@ export class ExecuteQuery implements AfterViewInit {
 
   query: string = '';
 
+  result: any = {
+    status: '',
+    violations: [],
+    message: '',
+  };
+
+  clearResult() {
+    this.result = {
+      status: '',
+      violations: [],
+      message: '',
+    };
+  }
+
   constructor(protected service: ExecuteQueryService) {
     
   }
@@ -27,5 +41,9 @@ export class ExecuteQuery implements AfterViewInit {
   }
   onSubmit(): void {
     console.log(this.query)
+    Object.assign(this.result, {
+      status: 'success',
+      message: `Some server response goes here.`,
+    })
   }
 }

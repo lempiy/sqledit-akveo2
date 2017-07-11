@@ -44,9 +44,11 @@
         </a>
       </td>
       <td>
-        <button class="btn btn-xs btn-danger" type="button" title="Show DDL">
-          Drop
-        </button>
+        <i 
+          class="ion-trash-a delete"
+          (click)="delete(item)" 
+          title="Delete table">
+        </i>
       </td>
     </tr>
     </tbody>
