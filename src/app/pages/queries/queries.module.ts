@@ -17,8 +17,6 @@ import { DeleteRow } from './components/deleteRow/deleteRow.component';
 import { DeleteRowService } from './components/deleteRow/deleteRow.service';
 import { UpdateRow } from './components/updateRow/updateRow.component';
 import { UpdateRowService } from './components/updateRow/updateRow.service';
-import { TableViews } from './components/tableViews/tableViews.component';
-import { TableViewsService } from './components/tableViews/tableViews.service';
 import { GeneralView } from './components/allViews/components/generalView';
 import { QueriesService } from './queries.service';
 import { TablesService } from '../tables/tables.service';
@@ -42,7 +40,6 @@ import { Ng2SmartTableModule } from 'ng2-smart-table';
     ExecuteQuery,
     GeneralView,
     AddRow,
-    TableViews,
     UpdateRow,
     DeleteRow,
   ],
@@ -51,7 +48,6 @@ import { Ng2SmartTableModule } from 'ng2-smart-table';
     ExecuteQueryService,
     AddRowService,
     QueriesService,
-    TableViewsService,
     TablesService,
     UpdateRowService,
     DeleteRowService,

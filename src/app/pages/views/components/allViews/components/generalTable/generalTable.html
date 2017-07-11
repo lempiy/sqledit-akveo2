@@ -1,0 +1,56 @@
+<div class="vertical">
+  <table class="table table-striped">
+    <thead>
+    <tr>
+      <th class="table-id">#</th>
+      <th>Table Name</th>
+      <th>Columns</th>
+      <th>Indexes</th>
+      <th>Views</th>
+      <th>Delete</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let item of tableData; let i = index;">
+      <td class="table-id">{{ i + 1 }}</td>
+      <td>
+        <a 
+          class="email-link" 
+          title="Change" 
+          [routerLink]="['/pages/tables/changetable', item.name]">
+            {{ item.name }}
+          </a>
+      </td>
+      <td>
+        <a 
+          class="email-link" 
+          title="Change" 
+          [routerLink]="['/pages/tables/changetable', item.name]">
+          {{ item.columns }}
+        </a>
+      </td>
+      <td>
+        <a 
+          class="email-link" 
+          title="Change" 
+          [routerLink]="['/pages/tables/indexes', item.name]">{{ item.indexes }}
+        </a>
+      </td>
+      <td>
+        <a 
+          class="email-link" 
+          title="Change" 
+          [routerLink]="['/pages/views/table', item.name]">{{ item.views }}
+        </a>
+      </td>
+      <td>
+        <i 
+          class="ion-trash-a delete"
+          (click)="delete(item)" 
+          title="Delete table">
+        </i>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
