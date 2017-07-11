@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 
 import { TableIndexesService } from './tableIndexes.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'table-indexes',
@@ -10,14 +11,27 @@ import { TableIndexesService } from './tableIndexes.service';
 export class TableIndexes {
 
   query: string = '';
+  private sub: any;
+  private tabName: string;
 
   tableIndexesData: any[];
 
-  constructor(protected service: TableIndexesService) {
-    this.service.getData('user').then((data) => {
-      this.tableIndexesData = data;
-      console.log(this.tableIndexesData)
+  constructor(
+    protected service: TableIndexesService, 
+    private route: ActivatedRoute) {
+  }
+
+  ngOnInit() {
+    this.sub = this.route.params.subscribe(params => {
+      this.tabName = params['name'];
+      this.service.getData(this.tabName).then((data: any[]) => {
+        this.tableIndexesData = data;
+      });
     });
+  }
+
+  ngOnDestroy() {
+    this.sub.unsubscribe();
   }
 
   onDeleteConfirm(event): void {

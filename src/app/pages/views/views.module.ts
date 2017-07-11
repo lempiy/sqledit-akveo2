@@ -10,7 +10,7 @@ import { Views } from './views.component';
 import { AllViews } from './components/allViews/allViews.component';
 import { AllViewsService } from './components/allViews/allViews.service';
 import { AddView } from './components/addView/addView.component';
-import { GeneralTable } from './components/allViews/components/generalTable';
+import { GeneralView } from './components/allViews/components/generalView';
 import { AddViewService } from './components/addView/addView.service';
 import { ChangeView } from './components/changeView/changeView.component';
 import { ChangeViewService } from './components/changeView/changeView.service';
@@ -37,7 +37,7 @@ import { Ng2SmartTableModule } from 'ng2-smart-table';
     AddView,
     ChangeView,
     TableViews,
-    GeneralTable,
+    GeneralView,
   ],
   providers: [
     AllViewsService,

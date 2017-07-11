@@ -1,6 +1,7 @@
 import { Component, ViewChild, AfterViewInit } from '@angular/core';
 
 import { UpdateRowService } from './updateRow.service';
+import { DatabaseService } from '../../../database/database.service';
 
 @Component({
   selector: 'update-row',
@@ -31,7 +32,7 @@ export class UpdateRow implements AfterViewInit {
     };
   }
 
-  constructor(protected service: UpdateRowService) {
+  constructor(protected service: UpdateRowService, public db: DatabaseService) {
     this.service.getData().then((data) => {
       this.allTables = Object.assign(this.allTables, data);
       this.allTables.forEach(table => {

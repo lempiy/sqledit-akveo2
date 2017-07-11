@@ -2,6 +2,7 @@ import { Component, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 
 import { AddTableService } from './addTable.service';
 import { LocalDataSource } from 'ng2-smart-table';
+import { DatabaseService } from '../../../database/database.service';
 
 @Component({
   selector: 'add-table',
@@ -100,7 +101,7 @@ export class AddTable implements AfterViewInit {
   source: LocalDataSource = new LocalDataSource();
   @ViewChild('inputNameElement') inputNameElement: ElementRef;
   
-  constructor(protected service: AddTableService) {
+  constructor(protected service: AddTableService, public db: DatabaseService) {
     this.service.getData().then((data) => {
       this.allTableData = Object.assign(this.allTableData, data);
       this.source.load(data.data);

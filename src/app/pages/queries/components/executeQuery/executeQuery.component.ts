@@ -1,6 +1,7 @@
 import { Component, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 
 import { ExecuteQueryService } from './executeQuery.service';
+import { DatabaseService } from '../../../database/database.service';
 
 @Component({
   selector: 'execute-query',
@@ -25,7 +26,7 @@ export class ExecuteQuery implements AfterViewInit {
     };
   }
 
-  constructor(protected service: ExecuteQueryService) {
+  constructor(protected service: ExecuteQueryService, public db: DatabaseService) {
     
   }
 

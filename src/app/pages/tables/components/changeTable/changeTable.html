@@ -1,7 +1,7 @@
 <div class="widgets">
 
   <div class="row">
-    <ba-card title="Change table in test_db" baCardClass="with-scroll" class="smart-table-container">
+    <ba-card title="Change table in {{db.currentDataBase}}" baCardClass="with-scroll" class="smart-table-container">
       <div class="form-group">
         <label for="input01">Table name</label>
         <input 
@@ -23,6 +23,7 @@
         class="btn btn-success btn-with-icon submit-btn btn pull-right" 
         type="button"
         (click)="onSubmit()"
+        [disabled]="!allTableData.name"
         title="Submit new table">
         <i class="ion-android-checkmark-circle"></i>Apply
       </button>

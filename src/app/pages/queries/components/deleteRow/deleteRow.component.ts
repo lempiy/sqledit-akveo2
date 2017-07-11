@@ -1,9 +1,10 @@
 import { Component, ViewChild, AfterViewInit } from '@angular/core';
 
 import { DeleteRowService } from './deleteRow.service';
+import { DatabaseService } from '../../../database/database.service';
 
 @Component({
-  selector: 'update-row',
+  selector: 'delete-row',
   templateUrl: './deleteRow.html',
   styleUrls: ['./deleteRow.scss']
 })
@@ -31,7 +32,7 @@ export class DeleteRow implements AfterViewInit {
     };
   }
   
-  constructor(protected service: DeleteRowService) {
+  constructor(protected service: DeleteRowService, public db: DatabaseService) {
     this.service.getData().then((data) => {
       this.allTables = Object.assign(this.allTables, data);
       this.allTables.forEach(table => {

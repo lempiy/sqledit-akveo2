@@ -1,11 +1,11 @@
 <div class="widgets">
 
   <div class="row">
-    <ba-card title="Views of db_test" baCardClass="with-scroll" class="smart-table-container">
-      <general-table 
+    <ba-card title="Views of {{db.currentDataBase}}" baCardClass="with-scroll" class="smart-table-container">
+      <general-view 
         (deleteView)='deleteView($event)'
         [tableData]='allViewData'>
-      </general-table>
+      </general-view>
       <sy-status 
         [status]="result.status"
         [message]="result.message"

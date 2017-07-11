@@ -1,6 +1,6 @@
 <div class="widgets">
   <div class="row">
-    <ba-card title="Delete row in test_db" baCardClass="with-scroll" class="smart-table-container">
+    <ba-card title="Delete row in {{db.currentDataBase}}" baCardClass="with-scroll" class="smart-table-container">
       <div class="form-group">
         <label for="input01">Table name</label>
         <select 
@@ -37,6 +37,7 @@
         class="btn btn-success btn-with-icon submit-btn btn pull-right" 
         type="button"
         (click)="onSubmit()"
+        [disabled]="!deleteRowData.name || !deleteRowData.where"
         title="Submit new view">
         <i class="ion-android-checkmark-circle"></i>Delete
       </button>

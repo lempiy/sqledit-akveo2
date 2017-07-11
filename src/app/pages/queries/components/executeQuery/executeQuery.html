@@ -1,7 +1,7 @@
 <div class="widgets">
 
   <div class="row">
-    <ba-card title="Execute query in in test_db" baCardClass="with-scroll" class="smart-table-container">
+    <ba-card title="Execute query in {{db.currentDataBase}}" baCardClass="with-scroll" class="smart-table-container">
       <div class="form-group">
           <label for="textarea01">SQL</label>
           <textarea 
@@ -21,6 +21,7 @@
         class="btn btn-success btn-with-icon submit-btn btn pull-right" 
         type="button"
         (click)="onSubmit()"
+        [disabled]="!query"
         title="Submit query">
         <i class="ion-android-checkmark-circle"></i>Execute
       </button>

@@ -3,7 +3,8 @@
     <h1>Select or Create Database</h1>
     <a 
       *ngIf="db.previousDataBase" 
-      routerLink="/login" 
+      routerLink=""
+      (click)="usePrev()" 
       class="auth-link">Use previous database: 
         <b>{{db.previousDataBase}}</b>
     </a>

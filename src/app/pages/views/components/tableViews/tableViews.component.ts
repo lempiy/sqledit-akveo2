@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 
 import { TableViewsService } from './tableViews.service';
+import { DatabaseService } from '../../../database/database.service';
 
 @Component({
   selector: 'table-views',
@@ -11,7 +12,7 @@ export class TableViews {
 
   query: string = '';
 
-    result: any = {
+  result: any = {
     status: '',
     violations: [],
     message: '',
@@ -27,7 +28,7 @@ export class TableViews {
 
   allViewData: any[];
 
-  constructor(protected service: TableViewsService) {
+  constructor(protected service: TableViewsService, public db: DatabaseService) {
     this.service.getData('user').then((data) => {
       this.allViewData = data;
     });

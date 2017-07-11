@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 
 import { AllViewsService } from './allViews.service';
 
+import { DatabaseService } from '../../../database/database.service';
+
 @Component({
   selector: 'all-views',
   templateUrl: './allViews.html',
@@ -27,7 +29,7 @@ export class AllViews {
 
   allViewData: any[];
 
-  constructor(protected service: AllViewsService) {
+  constructor(protected service: AllViewsService, public db: DatabaseService) {
     this.service.getData().then((data) => {
       this.allViewData = data;
     });

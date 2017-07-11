@@ -24,6 +24,12 @@ export class Database {
     this.name = this.form.controls['name'];
   }
 
+  usePrev() {
+    this.db.currentDataBase = this.db.previousDataBase;
+    this.router.navigate(['/pages/tables/alltables']);
+    this.submitted = true;
+  }
+
   public onSubmit(values:Object):void {
     if (this.form.valid) {
       this.db.currentDataBase = this.name.value;

@@ -3,6 +3,9 @@ import { Component, ViewChild, AfterViewInit } from '@angular/core';
 import { ChangeTableService } from './changeTable.service';
 import { LocalDataSource } from 'ng2-smart-table';
 
+import { DatabaseService } from '../../../database/database.service';
+import { ActivatedRoute } from '@angular/router';
+
 @Component({
   selector: 'change-table',
   templateUrl: './changeTable.html',
@@ -11,6 +14,8 @@ import { LocalDataSource } from 'ng2-smart-table';
 export class ChangeTable implements AfterViewInit {
 
   query: string = '';
+  private sub: any;
+  private tabName: string;
 
   result: any = {
     status: '',
@@ -66,11 +71,15 @@ export class ChangeTable implements AfterViewInit {
       deleteButtonContent: '<i class="ion-trash-a"></i>',
       confirmDelete: true,
     },
+    pager: {
+      display: false,
+    },
     noDataMessage: 'No columns',
     columns: {
       name: {
         title: 'Name',
-        type: 'string'
+        type: 'string',
+        filter: false,
       },
       type: {
         title: 'Field Type',
@@ -84,27 +93,33 @@ export class ChangeTable implements AfterViewInit {
             },
           },
         },
-        filter: {
-          type: 'completer',
-          config: {
-            completer: {
-              data: this.sqlColumnTypes,
-              titleField: 'title',
-              searchFields: 'value',
-            },
-          },
-        },
+        filter: false,
       }
     }
   };
 
   source: LocalDataSource = new LocalDataSource();
   
-  constructor(protected service: ChangeTableService) {
-    this.service.getData().then((data) => {
-      this.allTableData = Object.assign(this.allTableData, data);
-      this.source.load(data.columns);
+  constructor(
+    protected service: ChangeTableService, 
+    private route: ActivatedRoute,
+    public db: DatabaseService) {
+    
+  }
+
+  ngOnInit() {
+    this.sub = this.route.params.subscribe(params => {
+      this.tabName = params['name'];
+      console.log(this.tabName)
+      this.service.getData().then((data: any[]) => {
+        this.allTableData = Object.assign(data.find(table => table.name === this.tabName));
+        this.source.load(this.allTableData.columns);
+      });
     });
+  }
+
+  ngOnDestroy() {
+    this.sub.unsubscribe();
   }
 
   ngAfterViewInit() {

@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 
 import { AllTablesService } from './allTables.service';
+import { DatabaseService } from '../../../database/database.service';
 
 @Component({
   selector: 'all-tables',
@@ -27,7 +28,7 @@ export class AllTables {
 
   allTableData: any[];
 
-  constructor(protected service: AllTablesService) {
+  constructor(protected service: AllTablesService, public db: DatabaseService) {
     this.service.getData().then((data) => {
       this.allTableData = data.map(table => ({
         name: table.name,

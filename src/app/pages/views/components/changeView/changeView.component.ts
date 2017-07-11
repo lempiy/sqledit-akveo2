@@ -1,6 +1,7 @@
 import { Component, ViewChild, AfterViewInit } from '@angular/core';
 
 import { ChangeViewService } from './changeView.service';
+import { DatabaseService } from '../../../database/database.service';
 
 @Component({
   selector: 'change-view',
@@ -30,7 +31,7 @@ export class ChangeView implements AfterViewInit {
     sql: '',
   };
   
-  constructor(protected service: ChangeViewService) {
+  constructor(protected service: ChangeViewService, public db: DatabaseService) {
     this.service.getData().then((data) => {
       this.changeViewData = Object.assign(this.changeViewData, data);
     });

@@ -1,7 +1,7 @@
 <div class="widgets">
 
   <div class="row">
-    <ba-card title="Tables of db_test" baCardClass="with-scroll" class="smart-table-container">
+    <ba-card title="Tables of {{db.currentDataBase}}" baCardClass="with-scroll" class="smart-table-container">
       <general-table 
         [tableData]='allTableData'
         (deleteTable)='deleteTable($event)'></general-table>

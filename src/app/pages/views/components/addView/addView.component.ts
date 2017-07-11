@@ -3,6 +3,8 @@ import { Component, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import { AddViewService } from './addView.service';
 import { LocalDataSource } from 'ng2-smart-table';
 
+import { DatabaseService } from '../../../database/database.service';
+
 @Component({
   selector: 'add-view',
   templateUrl: './addView.html',
@@ -97,7 +99,7 @@ export class AddView implements AfterViewInit {
   source: LocalDataSource = new LocalDataSource();
   @ViewChild('inputNameElement') inputNameElement: ElementRef;
   
-  constructor(protected service: AddViewService) {
+  constructor(protected service: AddViewService, public db: DatabaseService) {
     this.service.getData().then((data) => {
       this.allViewData = Object.assign(this.allViewData, data);
       this.source.load(data.data);

@@ -16,7 +16,7 @@ export class ChangeTableService {
   getData(): Promise<any> {
     return new Promise((resolve, reject) => {
       // setTimeout(() => {
-        resolve(this._tables.selectedTable);
+        resolve(this._tables.allTableData);
       // }, 2000);
     });
   }
