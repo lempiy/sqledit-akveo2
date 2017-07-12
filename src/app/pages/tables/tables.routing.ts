@@ -18,11 +18,7 @@ const routes: Routes = [
     children: [
       { path: 'alltables', component: AllTables },
       { path: 'addtable', component: AddTable },
-      { path: 'changetable/:name', component: ChangeTable },
-      { path: 'basictables', component: BasicTables },
-      { path: 'smarttables', component: SmartTables },
-      { path: 'datatables', component: DataTables },
-      { path: 'hottables', component: HotTablesComponent },
+      { path: ':name', loadChildren: './components/changeTable/changeTable.module#ChangeTableModule' },
       { path: 'indexes/:name', component: TableIndexes },
     ]
   }

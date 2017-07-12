@@ -1,17 +1,20 @@
-import { Component, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
+import { Component, ViewChild, AfterViewInit } from '@angular/core';
 
-import { AddTableService } from './addTable.service';
+import { ChangeTableService } from '../../changeTable.service';
 import { LocalDataSource } from 'ng2-smart-table';
-import { DatabaseService } from '../../../database/database.service';
+
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
-  selector: 'add-table',
-  templateUrl: './addTable.html',
-  styleUrls: ['./addTable.scss']
+  selector: 'structure-table',
+  templateUrl: './structure.html',
+  styleUrls: ['./structure.scss']
 })
-export class AddTable implements AfterViewInit {
+export class Structure implements AfterViewInit {
 
   query: string = '';
+  private sub: any;
+  private tabName: string;
 
   result: any = {
     status: '',
@@ -29,7 +32,7 @@ export class AddTable implements AfterViewInit {
 
   allTableData: any = {
     name: '',
-    data: [],
+    columns: [],
   };
 
   sqlColumnTypes = [
@@ -49,7 +52,6 @@ export class AddTable implements AfterViewInit {
     { value: 'STRING', title: 'STRING' },
     { value: 'TEXT', title: 'TEXT' },
     { value: 'TIME', title: 'TIME' },
-    { value: 'FLOAT', title: 'FLOAT' },
     { value: 'VARCHAR', title: 'VARCHAR' },
   ];
 
@@ -68,16 +70,18 @@ export class AddTable implements AfterViewInit {
       deleteButtonContent: '<i class="ion-trash-a"></i>',
       confirmDelete: true,
     },
+    pager: {
+      perPage: 15,
+    },
     noDataMessage: 'No columns',
     columns: {
       name: {
         title: 'Name',
+        type: 'string',
         filter: false,
-        type: 'string'
       },
-      fieldType: {
+      type: {
         title: 'Field Type',
-        filter: false,
         editor: {
           type: 'completer',
           config: {
@@ -88,43 +92,52 @@ export class AddTable implements AfterViewInit {
             },
           },
         },
-      },
-      ddl: {
-        title: 'DDL',
         filter: false,
-        selectText: 'Example: UNIQUE NOT NULL',
-        type: 'string',
-      },
+      }
     }
   };
 
   source: LocalDataSource = new LocalDataSource();
-  @ViewChild('inputNameElement') inputNameElement: ElementRef;
   
-  constructor(protected service: AddTableService, public db: DatabaseService) {
-    this.service.getData().then((data) => {
-      this.allTableData = Object.assign(this.allTableData, data);
-      this.source.load(data.data);
+  constructor(
+    protected service: ChangeTableService, 
+    private route: ActivatedRoute) {
+    
+  }
+
+  ngOnInit() {
+    this.sub = this.route.parent.params.subscribe(params => {
+      this.tabName = params['name'];
+      this.service.getData().then((data: any[]) => {
+        this.allTableData = Object.assign(data.find(table => table.name === this.tabName));
+        this.source.load(this.allTableData.columns);
+      });
     });
   }
 
-  ngAfterViewInit() {
-    (<HTMLInputElement>this.inputNameElement.nativeElement).focus();
+  ngOnDestroy() {
+    this.sub.unsubscribe();
   }
 
+  ngAfterViewInit() {
+  }
+
+  onDeleteConfirm(event): void {
+    if (window.confirm('Are you sure you want to delete?')) {
+      event.confirm.resolve();
+    } else {
+      event.confirm.reject();
+    }
+  }
   onSubmit(): void {
     this.source.getAll().then(data => {
       console.log({
         name: this.allTableData.name,
         columns: data,
-      })
+      });
       Object.assign(this.result, {
-        status: 'fail',
-        message: `Table ${this.allTableData.name} was not created.`,
-        violations: [
-          'Wrong DDL data',
-          'Table with such name already exists.',
-        ],
+        status: 'success',
+        message: `Table ${this.allTableData.name} has been editd.`,
       })
     })
   }

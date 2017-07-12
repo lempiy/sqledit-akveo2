@@ -188,6 +188,7 @@ export const PAGES_MENU = [
             path: 'alltables',
             data: {
               menu: {
+                icon: 'ion-more',
                 title: 'general.menu.all_tables',
               }
             }
@@ -196,20 +197,21 @@ export const PAGES_MENU = [
             path: 'addtable',
             data: {
               menu: {
+                icon: 'ion-plus-round',
                 title: 'general.menu.add_table',
               }
             }
           },
-          {
-            path: 'changetable',
-            data: {
-              menu: {
-                title: 'general.menu.change_table',
-                pathMatch: 'prefix',
-                hidden: true,
-              }
-            }
-          },
+          // {
+          //   path: 'changetable',
+          //   data: {
+          //     menu: {
+          //       title: 'general.menu.change_table',
+          //       pathMatch: 'full',
+          //       hidden: true,
+          //     }
+          //   }
+          // },
           {
             path: 'indexes',
             data: {

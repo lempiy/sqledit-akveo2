@@ -7,11 +7,12 @@ import { AppTranslationModule } from '../app.translation.module';
 
 import { Pages } from './pages.component';
 import { PagesGuard } from './pages.guard';
+import { TablesService } from './tables/tables.service';
 
 @NgModule({
   imports: [CommonModule, AppTranslationModule, NgaModule, routing],
   declarations: [Pages],
-  providers: [PagesGuard],
+  providers: [PagesGuard, TablesService],
 })
 export class PagesModule {
 }
