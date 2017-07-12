@@ -13,7 +13,9 @@ import { ChangeTable } from './changeTable.component';
 import { ChangeTableService } from './changeTable.service';
 import { Structure } from './components/structure/structure.component';
 import { Edit } from './components/edit/edit.component';
+import { Indexes } from './components/indexes/indexes.component';
 import { EditService } from './components/edit/edit.service';
+import { Views } from './components/views/views.component';
 
 @NgModule({
   imports: [
@@ -30,6 +32,8 @@ import { EditService } from './components/edit/edit.service';
     ChangeTable,
     Structure,
     Edit,
+    Indexes,
+    Views,
   ],
   providers: [
     ChangeTableService,

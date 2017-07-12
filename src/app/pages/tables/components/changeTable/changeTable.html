@@ -1,6 +1,6 @@
 <div class="widgets">
   <div class="row">
-    <ba-card title="Change table in {{db.currentDataBase}}" baCardClass="with-scroll" class="smart-table-container">
+    <ba-card title="Table {{tabName}} in {{db.currentDataBase}}" baCardClass="with-scroll" class="smart-table-container">
       <div class="text-center">
         <div class="btn-group menu-change" role="group">
           <a class="btn btn-custom" 
@@ -13,8 +13,16 @@
             routerLinkActive="link-active">
             Edit data
           </a>
-          <a class="btn btn-custom">Indexes</a>
-          <a class="btn btn-custom">Views</a>
+          <a class="btn btn-custom" 
+            [routerLink]="['indexes']" 
+            routerLinkActive="link-active">
+            Indexes
+          </a>
+          <a class="btn btn-custom" 
+            [routerLink]="['views']" 
+            routerLinkActive="link-active">
+            Views
+          </a>
         </div>
       </div>
       <router-outlet></router-outlet>

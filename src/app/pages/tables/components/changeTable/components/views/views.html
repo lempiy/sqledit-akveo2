@@ -1,0 +1,67 @@
+<div>
+  <div class="vertical" *ngIf="allViewData && allViewData.length">
+    <table class="table table-striped">
+      <thead>
+      <tr>
+        <th class="table-id">#</th>
+        <th>Name</th>
+        <th>Table Name</th>
+        <th>SQL</th>
+        <th>Delete</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let item of allViewData; let i = index;">
+        <td class="table-id">{{ i + 1 }}</td>
+        <td>
+          <a 
+            class="email-link" 
+            title="Change" 
+            [routerLink]="['/pages/views/changeview', item.name]">
+              {{ item.name }}
+            </a>
+        </td>
+        <td>
+          <a 
+            class="email-link" 
+            title="Change" 
+            [routerLink]="['/pages/tables/changetable', item.table_name]">
+            {{ item.table_name }}
+          </a>
+        </td>
+        <td>
+          <a 
+            class="email-link" 
+            title="Change" 
+            [routerLink]="['/pages/views/changeview', item.name]">
+            <p>{{ item.sql }}</p>
+          </a>
+        </td>
+        <td>
+          <i 
+            class="ion-trash-a delete"
+            (click)="deleteView(item)" 
+            title="Delete view">
+          </i>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="text-center" *ngIf="!allViewData || !allViewData.length">
+    <h4>NO VIEWS</h4>
+  </div>
+  <sy-status 
+    [status]="result.status"
+    [message]="result.message"
+    [violations]="result.violations"
+    (clearMessage)="clearResult()">
+  </sy-status>
+  <a 
+    class="btn btn-success btn-with-icon add-btn" 
+    title="Create a New Table"
+    [routerLink]="['/pages/views/addview']">
+    <i class="ion-plus-round"></i>
+    Add View
+  </a>
+</div>

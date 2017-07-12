@@ -4,6 +4,8 @@ import { ChangeTable } from './changeTable.component';
 import { Structure } from './components/structure/structure.component';
 
 import { Edit } from './components/edit/edit.component';
+import { Indexes } from './components/indexes/indexes.component';
+import { Views } from './components/views/views.component';
 
 // noinspection TypeScriptValidateTypes
 const routes: Routes = [
@@ -14,6 +16,8 @@ const routes: Routes = [
       { path: '', redirectTo: 'structure', pathMatch: 'full' },
       { path: 'structure', component: Structure },
       { path: 'edit', component: Edit },
+      { path: 'indexes', component: Indexes },
+      { path: 'views', component: Views },
     ]
   }
 ];

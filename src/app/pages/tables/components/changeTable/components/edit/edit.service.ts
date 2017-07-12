@@ -7,6 +7,7 @@ export class EditService {
   editData = {
     name: '',
     sql: '',
+    where: '',
   };
 
   constructor(protected _tables: TablesService) {

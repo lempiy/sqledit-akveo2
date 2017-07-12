@@ -94,7 +94,13 @@ export class TablesService {
                 ]
             }
         ],
-        "views": null
+        "views": [{
+            name: 'test',
+            sql: `CREATE VIEW [Test View] AS
+                SELECT id, username
+                FROM user
+                WHERE created_at >= #1/20/2015#`,
+        }]
     },
     {
         "name": "AlgoKpiAvgs",
