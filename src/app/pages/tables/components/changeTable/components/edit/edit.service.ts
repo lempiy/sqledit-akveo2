@@ -21,4 +21,12 @@ export class EditService {
       // }, 2000);
     });
   }
+  
+  getRows(): Promise<any> {
+    return new Promise((resolve, reject) => {
+      // setTimeout(() => {
+        resolve(this._tables.dummyRows);
+      // }, 2000);
+    });
+  }
 }

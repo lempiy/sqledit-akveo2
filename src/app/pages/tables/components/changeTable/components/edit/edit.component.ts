@@ -2,6 +2,7 @@ import { Component, ViewChild, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 import { EditService } from './edit.service';
+import { LocalDataSource } from 'ng2-smart-table';
 
 @Component({
   selector: 'edit-row',
@@ -14,7 +15,9 @@ export class Edit implements OnInit, OnDestroy {
   currentTable: any;
   query: string = '';
   allTables: any = [];
-  editState: string;
+  allRows: any[];
+  source: LocalDataSource = new LocalDataSource();
+
   editData: any = {
     name: '',
     where: '',
@@ -24,6 +27,28 @@ export class Edit implements OnInit, OnDestroy {
     status: '',
     violations: [],
     message: '',
+  };
+
+  settings = {
+    add: {
+      addButtonContent: '<i class="ion-ios-plus-outline"></i>',
+      createButtonContent: '<i class="ion-checkmark"></i>',
+      cancelButtonContent: '<i class="ion-close"></i>',
+    },
+    edit: {
+      editButtonContent: '<i class="ion-edit"></i>',
+      saveButtonContent: '<i class="ion-checkmark"></i>',
+      cancelButtonContent: '<i class="ion-close"></i>',
+    },
+    delete: {
+      deleteButtonContent: '<i class="ion-trash-a"></i>',
+      confirmDelete: true,
+    },
+    pager: {
+      perPage: 15,
+    },
+    noDataMessage: 'No columns',
+    columns: {},
   };
 
   clearResult() {
@@ -40,7 +65,6 @@ export class Edit implements OnInit, OnDestroy {
   ngOnInit() {
     this.sub = this.route.parent.params.subscribe(params => {
       this.tabName = params['name'];
-      this.editState = 'add';
       this.service.getData().then((data: any[]) => {
         this.allTables = Object.assign(this.allTables, data);
         this.currentTable = this.allTables.find(table => table.name === this.tabName);
@@ -52,6 +76,24 @@ export class Edit implements OnInit, OnDestroy {
             type: column.type,
           })),
         };
+      });
+      this.service.getRows().then((data: any[]) => {
+        this.allRows = data.map(row => {
+          Object.keys(row).forEach(key => {
+            if (row[key] === null) {
+              row[key] = 'NULL';
+            }
+          });
+          return row;
+        });
+        Object.keys(this.allRows[0]).forEach(key => {
+          this.settings.columns[key] = {
+              title: key,
+              type: 'string',
+              //filter: false,
+          };
+        });
+        this.source.load(this.allRows);
       });
     });
   }

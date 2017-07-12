@@ -8,75 +8,12 @@
       type="text"
       [(ngModel)]="editData.name">
   </div>
-  <div class="input-edit-type radio-demo row">
-    <div class="col-md-4 text-center">
-      <label class="radio-inline custom-radio nowrap">
-        <input 
-          id="editState1" 
-          name="editState" [(ngModel)]="editState" type="radio" value="add">
-        <span translate=""><b>Add</b></span>
-      </label>
-    </div>
-    <div class="col-md-4 text-center">
-      <label class="radio-inline custom-radio nowrap">
-        <input 
-          id="editState2" 
-          name="editState" [(ngModel)]="editState" type="radio" value="update">
-        <span><b>Update</b></span>
-      </label>
-    </div>
-    <div class="col-md-4 text-center">
-      <label class="radio-inline custom-radio nowrap">
-        <input 
-          id="editState3" 
-          name="editState" [(ngModel)]="editState" type="radio" value="delete">
-        <span><b>Delete</b></span>
-      </label>
-    </div>
-  </div>
-  <div>
-    <div [class.hidden]="editState === 'delete'">
-      <div class="row">
-        <div class="col-md-6">
-            <label for="input01">Column name</label>
-          </div>
-          <div class="col-md-6">
-            <label for="input01">Value</label>
-          </div>
-      </div>
-      <div class="form-group row" 
-        *ngFor="let column of editData.columns">
-          <div class="col-md-6">
-            <input 
-              class="form-control" 
-              id="input01"
-              [ngModel]="column.name" 
-              disabled
-              type="text">
-          </div>
-          <div class="col-md-6">
-            <input 
-              class="form-control" 
-              id="input01" 
-              placeholder="{{column.type}}"
-              [(ngModel)]="column.input" 
-              type="text">
-          </div>
-      </div>
-    </div>
-    <div class="input-group" [class.hidden]="editState === 'add'">
-      <span 
-        class="input-group-addon input-group-addon-primary addon-left" 
-        id="basic-addon1">
-          WHERE
-      </span>
-      <input 
-        aria-describedby="basic-addon1" 
-        class="form-control with-primary-addon" 
-        placeholder="SQL condition..." 
-        [(ngModel)]="editData.where"
-        type="text">
-    </div>
+  <div *ngIf="allRows" class="tabler">
+      <ng2-smart-table 
+          [settings]="settings" 
+          [source]="source" 
+          (deleteConfirm)="onDeleteConfirm($event)">
+      </ng2-smart-table>
   </div>
   <sy-status 
     [status]="result.status"
@@ -84,12 +21,4 @@
     [violations]="result.violations"
     (clearMessage)="clearResult()">
   </sy-status>
-  <button 
-    class="btn btn-success btn-with-icon submit-btn btn pull-right" 
-    type="button"
-    (click)="onSubmit()"
-    [disabled]="!editData.name"
-    title="Submit new view">
-    <i class="ion-android-checkmark-circle"></i>Submit
-  </button>
 </div>

@@ -4,6 +4,11 @@
   .smart-table-container {
     width: 100%;
   }
+
+}
+
+.tabler {
+  overflow-x: scroll;
 }
 
 .input-edit-type {
@@ -50,6 +55,14 @@
     ng2-smart-table-cell {
       color: $default-text;
       line-height: 35px;
+    }
+
+    .ng2-smart-row {
+      table-cell-view-mode {
+        div {
+          white-space: nowrap;
+        }
+      }
     }
 
     tbody {
