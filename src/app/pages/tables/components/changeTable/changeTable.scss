@@ -12,6 +12,9 @@
     color: #fff;
     background: transparent;
     border-color: rgba(255,255,255,0.5);
+    i {
+      margin-right: 5px
+    }
   }
   .btn-custom:hover, .link-active {
     background: rgba(231,231,231,0.2);
