@@ -112,6 +112,14 @@ export class AddTable implements AfterViewInit {
     (<HTMLInputElement>this.inputNameElement.nativeElement).focus();
   }
 
+  onDeleteConfirm(event): void {
+    if (window.confirm('Are you sure you want to delete?')) {
+      event.confirm.resolve();
+    } else {
+      event.confirm.reject();
+    }
+  }
+
   onSubmit(): void {
     this.source.getAll().then(data => {
       console.log({
