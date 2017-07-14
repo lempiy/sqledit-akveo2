@@ -110,6 +110,14 @@ export class Structure implements AfterViewInit {
       this.tabName = params['name'];
       this.service.getData().then((data: any[]) => {
         this.allTableData = Object.assign(data.find(table => table.name === this.tabName));
+        
+        const types = data.reduce((acc, item) => {
+          item.columns.forEach(element => {
+            acc[element.type.toUpperCase()] = element.type.toUpperCase();
+          });
+          return acc;
+        }, {});
+        console.log(JSON.stringify(types));
         this.source.load(this.allTableData.columns);
       });
     });
