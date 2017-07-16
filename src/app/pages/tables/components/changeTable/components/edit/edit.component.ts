@@ -178,7 +178,7 @@ export class Edit implements OnInit, OnDestroy {
         acc.push(err);
       }
       const constraint = this.constraints.find(c => c.name === key);
-      err = validators.validateConstraints(newData[key], allData.map(data => data[key]), constraint);
+      err = validators.validateConstraints(newData[key], allData.map(data => data[key]), constraint, key);
       if (err) {
         acc.push(err);
       }

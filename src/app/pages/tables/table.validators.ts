@@ -113,22 +113,22 @@ export const validators = {
         }
         return result;
     },
-    validateConstraints: (value: any, allValues: any[], rowDef: any) => {
+    validateConstraints: (value: any, allValues: any[], rowDef: any, key: string) => {
         if (rowDef.pk && value) {
             const isOK = allValues.every(val => {
                 return String(val) !== String(value);
             });
             if (!isOK) {
-                return `Primary key ${value} should be unique.`;
+                return `Primary key ${key} should be unique.`;
             }
         }
 
-        if (rowDef.notnull) {
+        if (rowDef.notnull || rowDef.pk) {
             if (rowDef.dflt_value) {
                 return null;
             }
             if (value === '' || String(value).toUpperCase() === 'NULL') {
-                return `Value ${value} cannot be set to NULL.`;
+                return `Value ${key} cannot be set to NULL.`;
             }
         }
         
