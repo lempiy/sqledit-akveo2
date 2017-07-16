@@ -20,4 +20,9 @@ export class ChangeTableService {
       // }, 2000);
     });
   }
+  getPragma(): Promise<any> {
+    return new Promise((resolve, reject) => {
+      resolve(this._tables.tablePragma);
+    });
+  }
 }

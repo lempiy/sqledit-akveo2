@@ -4,6 +4,7 @@ import { ChangeTableService } from '../../changeTable.service';
 import { LocalDataSource } from 'ng2-smart-table';
 
 import { ActivatedRoute } from '@angular/router';
+import { validators } from '../../../../table.validators';
 
 @Component({
   selector: 'structure-table',
@@ -60,11 +61,13 @@ export class Structure implements AfterViewInit {
       addButtonContent: '<i class="ion-ios-plus-outline"></i>',
       createButtonContent: '<i class="ion-checkmark"></i>',
       cancelButtonContent: '<i class="ion-close"></i>',
+      confirmCreate: true,
     },
     edit: {
       editButtonContent: '<i class="ion-edit"></i>',
       saveButtonContent: '<i class="ion-checkmark"></i>',
       cancelButtonContent: '<i class="ion-close"></i>',
+      confirmSave: true,
     },
     delete: {
       deleteButtonContent: '<i class="ion-trash-a"></i>',
@@ -93,8 +96,37 @@ export class Structure implements AfterViewInit {
           },
         },
         filter: false,
-      }
-    }
+      },
+      notnull: {
+        title: 'Not NULL',
+        type: 'text',
+        filter: false,
+        editor: {
+          type: 'checkbox',
+          config: {
+            true: '\u2611',
+            false: ' ',
+          },
+        },
+      },
+      pk: {
+        title: 'Primary Key',
+        type: 'text',
+        filter: false,
+        editor: {
+          type: 'checkbox',
+          config: {
+            true: '\u26BF',
+            false: ' ',
+          },
+        },
+      },
+      dflt_value: {
+        title: 'Default Value',
+        type: 'string',
+        filter: false,
+      },
+    },
   };
 
   source: LocalDataSource = new LocalDataSource();
@@ -108,16 +140,20 @@ export class Structure implements AfterViewInit {
   ngOnInit() {
     this.sub = this.route.parent.params.subscribe(params => {
       this.tabName = params['name'];
-      this.service.getData().then((data: any[]) => {
-        this.allTableData = Object.assign(data.find(table => table.name === this.tabName));
-        
-        const types = data.reduce((acc, item) => {
-          item.columns.forEach(element => {
-            acc[element.type.toUpperCase()] = element.type.toUpperCase();
+      Promise.all([this.service.getData(), this.service.getPragma()]).then((result: any[]) => {
+        const data = result[0];
+        const pragma = result[1];
+        // const curTable = Object.assign(data.find(table => table.name === this.tabName));
+        const curTable = Object.assign({}, data.find(table => table.name === 'CarriersExtraData'));
+        this.allTableData = curTable;
+        this.allTableData.columns = pragma.map(column => {
+          const c = Object.assign({}, column, {
+            pk: column.pk ? '\u26BF' : ' ',
+            notnull: column.notnull ? '\u2611' : ' ',
           });
-          return acc;
-        }, {});
-        console.log(JSON.stringify(types));
+          const item = curTable.columns.find(col => col.name === column.name);
+          return Object.assign({}, item, c);
+        });
         this.source.load(this.allTableData.columns);
       });
     });
@@ -130,6 +166,24 @@ export class Structure implements AfterViewInit {
   ngAfterViewInit() {
   }
 
+  displayInputError(result) {
+    Object.assign(this.result, {
+      status: 'fail',
+      message: `Wrong input.`,
+      violations: result,
+    });
+  }
+
+  onConfirm(event): void {
+    const err = validators.validateColumn(event.newData);
+    if (err.length) {
+      this.displayInputError(err);
+      return event.confirm.reject();
+    }
+    this.clearResult();
+    return event.confirm.resolve();
+  }
+
   onDeleteConfirm(event): void {
     if (window.confirm('Are you sure you want to delete?')) {
       event.confirm.resolve();
@@ -137,6 +191,7 @@ export class Structure implements AfterViewInit {
       event.confirm.reject();
     }
   }
+  
   onSubmit(): void {
     this.source.getAll().then(data => {
       console.log({
@@ -145,7 +200,7 @@ export class Structure implements AfterViewInit {
       });
       Object.assign(this.result, {
         status: 'success',
-        message: `Table ${this.allTableData.name} has been editd.`,
+        message: `Table ${this.allTableData.name} has been edited.`,
       })
     })
   }

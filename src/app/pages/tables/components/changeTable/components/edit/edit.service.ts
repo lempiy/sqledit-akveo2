@@ -21,6 +21,14 @@ export class EditService {
       // }, 2000);
     });
   }
+
+  getConstraits(): Promise<any> {
+    return new Promise((resolve, reject) => {
+      // setTimeout(() => {
+        resolve(this._tables.tablePragma);
+      // }, 2000);
+    });
+  }
   
   getRows(): Promise<any> {
     return new Promise((resolve, reject) => {

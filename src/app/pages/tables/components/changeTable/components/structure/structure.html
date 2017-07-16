@@ -3,23 +3,27 @@
     <label for="input01">Table name</label>
     <input 
         class="form-control" 
-        id="input01" 
+        id="inputname" 
         placeholder="Example: order" 
         type="text"
         #inputNameElement
         [(ngModel)]="allTableData.name">
     </div>
-    <ng2-smart-table 
-        [settings]="settings" 
-        [source]="source" 
-        (deleteConfirm)="onDeleteConfirm($event)">
-    </ng2-smart-table>
     <sy-status 
         [status]="result.status"
         [message]="result.message"
         [violations]="result.violations"
         (clearMessage)="clearResult()">
     </sy-status>
+    <div class="tabler">
+        <ng2-smart-table 
+            [settings]="settings" 
+            [source]="source"
+            (createConfirm)="onConfirm($event)" 
+            (editConfirm)="onConfirm($event)" 
+            (deleteConfirm)="onDeleteConfirm($event)">
+        </ng2-smart-table>
+    </div>
     <button 
         class="btn btn-success btn-with-icon submit-btn btn pull-right" 
         type="button"

@@ -18,6 +18,7 @@ export class Edit implements OnInit, OnDestroy {
   query: string = '';
   allTables: any = [];
   allRows: any[];
+  constraints: any[];
   source: LocalDataSource = new LocalDataSource();
 
   editData: any = {
@@ -46,7 +47,7 @@ export class Edit implements OnInit, OnDestroy {
     },
     delete: {
       deleteButtonContent: '<i class="ion-trash-a"></i>',
-      confirmDelete: true,
+      // confirmDelete: true,
     },
     pager: {
       perPage: 15,
@@ -82,11 +83,13 @@ export class Edit implements OnInit, OnDestroy {
           })),
         };
       });
-      this.service.getRows().then((data: any[]) => {
-        this.allRows = data.map(row => {
+      Promise.all([this.service.getRows(), this.service.getConstraits()]).then((data: any[]) => {
+        this.constraints = data[1];
+        this.allRows = data[0].map(row => {
           Object.keys(row).forEach(key => {
             if (row[key] === null) {
-              row[key] = 'NULL';
+              const constraint = this.constraints.find(c => c.name === key);
+              row[key] = constraint.dflt_value || 'NULL';
             }
           });
           return row;
@@ -106,8 +109,14 @@ export class Edit implements OnInit, OnDestroy {
   onEditConfirm($event) {
     const { newData } = $event;
     const keys = Object.keys($event.newData);
-    const DEFAULT = 'NULL';
-    const result = this.inspectErrors(keys, newData);
+    const changedData = keys.reduce((acc, key) => {
+      if ($event.data[key] !== $event.newData[key]) {
+        acc[key] = $event.newData[key];
+      }
+      return acc;
+    }, {});
+    
+    const result = this.inspectErrors(keys, changedData, $event.source.data);
     if (result.length) {
       this.displayInputError(result);
       $event.confirm.reject();
@@ -117,7 +126,8 @@ export class Edit implements OnInit, OnDestroy {
       this.clearResult();
       const withNull = keys.reduce((acc, key) => {
         if (newData[key] === '') {
-          acc[key] = DEFAULT;
+          const constraint = this.constraints.find(c => c.name === key);
+          acc[key] = constraint.dflt_value || 'NULL';
         } else {
           acc[key] = newData[key];
         }
@@ -130,8 +140,7 @@ export class Edit implements OnInit, OnDestroy {
   onAddConfirm($event) {
     const { newData } = $event;
     const keys = Object.keys($event.newData);
-    const DEFAULT = 'NULL';
-    const result = this.inspectErrors(keys, newData);
+    const result = this.inspectErrors(keys, newData, $event.source.data);
     if (result.length) {
       this.displayInputError(result);
       $event.confirm.reject();
@@ -140,7 +149,8 @@ export class Edit implements OnInit, OnDestroy {
       const withNull = {};
       keys.forEach(key => {
         if (newData[key] === '') {
-          withNull[key] = DEFAULT;
+          const constraint = this.constraints.find(c => c.name === key);
+          withNull[key] = constraint.dflt_value || 'NULL';
         }
       });
 
@@ -159,15 +169,20 @@ export class Edit implements OnInit, OnDestroy {
     }
   }
 
-  private inspectErrors(keys: string[], newData: any) {
+  private inspectErrors(keys: string[], newData: any, allData: any) {
     return keys.reduce((acc, key) => {
       const itemValue = newData[key];
       const itemType = this.currentTable.columns.find(column => column.name === key).type;
-      const err = validators.validateRow(newData[key], itemType);
-        if (err) {
-          acc.push(err);
-        }
-        return acc;
+      let err = validators.validateRow(newData[key], itemType);
+      if (err) {
+        acc.push(err);
+      }
+      const constraint = this.constraints.find(c => c.name === key);
+      err = validators.validateConstraints(newData[key], allData.map(data => data[key]), constraint);
+      if (err) {
+        acc.push(err);
+      }
+      return acc;
     }, []);
   }
 

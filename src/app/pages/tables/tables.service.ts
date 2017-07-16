@@ -4691,6 +4691,129 @@ export class TablesService {
     }
 ];
 
+tablePragma = [
+    {
+        "cid": 0,
+        "name": "CarrierId",
+        "type": "nvarchar (50)",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 1
+    },
+    {
+        "cid": 1,
+        "name": "StoreNo",
+        "type": "integer",
+        "notnull": 1,
+        "dflt_value": null,
+        "pk": 0
+    },
+    {
+        "cid": 2,
+        "name": "Status",
+        "type": "integer",
+        "notnull": 1,
+        "dflt_value": 1,
+        "pk": 0
+    },
+    {
+        "cid": 3,
+        "name": "Lat",
+        "type": "float",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+    },
+    {
+        "cid": 4,
+        "name": "Lng",
+        "type": "float",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+    },
+    {
+        "cid": 5,
+        "name": "Vehicle_Id",
+        "type": "nvarchar (50)",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+    },
+    {
+        "cid": 6,
+        "name": "EstimatedReturnTime",
+        "type": "datetime",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+    },
+    {
+        "cid": 7,
+        "name": "LastGpsUpdate",
+        "type": "datetime",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+    },
+    {
+        "cid": 8,
+        "name": "ManualDecissionTime",
+        "type": "datetime",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+    },
+    {
+        "cid": 9,
+        "name": "AlertStatus",
+        "type": "integer",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+    },
+    {
+        "cid": 10,
+        "name": "ManualEstimatedReturnTime",
+        "type": "datetime",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+    },
+    {
+        "cid": 11,
+        "name": "LastRoute",
+        "type": "integer",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+    },
+    {
+        "cid": 12,
+        "name": "UpdateStamp",
+        "type": "int",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+    },
+    {
+        "cid": 13,
+        "name": "WaitingTime",
+        "type": "DATETIME",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+    },
+    {
+        "cid": 14,
+        "name": "LastCarrierActivityForMileage",
+        "type": "Integer",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+    }
+]
+
   getData(): Promise<any> {
     return new Promise((resolve, reject) => {
       setTimeout(() => {
@@ -4702,6 +4825,14 @@ export class TablesService {
     return new Promise((resolve, reject) => {
       setTimeout(() => {
         resolve(this.dummyRows);
+      }, 1000);
+    });
+  }
+
+  getPragma():Promise<any> {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        resolve(this.tablePragma);
       }, 1000);
     });
   }

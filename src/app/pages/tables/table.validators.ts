@@ -16,6 +16,12 @@ const sqlTypes = {
     'TEXT PINCODE TEXT': 'TEXT PINCODE TEXT',
 };
 
+const sqlConstraints = {
+    notNull: 'notnull',
+    default: 'dflt_value',
+    primaryKey: 'pk',
+};
+
 const moneyExp = new RegExp(
     `^[\\u0024\\u00A2-\\u00A5\\u09F2-\\u09F3\\u0E3f\\u17DB\\u20A0-\\u20B1\\uFE69\\uFF04-\\uFFE6]?\
     \\d+(\\d+(,(?=\\d))?\\d*)+(\\\.(?=\\d{1,2})\\d+)?$`,
@@ -77,7 +83,9 @@ export const validators = {
                     rowValue,
                 );
             default:
-                const match = /^NVARCHAR\((\d+)\)/g.exec(rowType);
+                
+                const match = /^NVARCHAR\s?\((\d+)\)/g.exec(rowType.toUpperCase());
+                
                 let isOk = true;
                 if (match) {
                     isOk = +match[1] > rowValue.length;
@@ -89,28 +97,40 @@ export const validators = {
                 );
         }
     },
-    adaptRow: (rowValue, rowType) => {
-        // NO DATA ABOUT NOT NULL YET
-        if (rowValue === 'NULL') {
-            return 'NULL';
+    validateColumn: (column) => {
+        const result = [];
+        if (column.dflt_value) {
+            const err = validators.validateRow(column.dflt_value, column.type);
+            if (err) {
+                result.push(err);
+            } 
         }
-        switch (rowType.toUpperCase()) {
-            case 'BIT':
-            case 'BOOLEAN':
-                return rowValue === 'true';
-            case 'INTEGER':
-            case 'INT':
-            case 'FLOAT':
-            case 'NUMERIC':
-            case 'REAL':
-            case 'BIGINT':
-            case 'SMALLINT':
-                if (rowValue !== '') {
-                    return +rowValue;
-                }
-                return rowValue;
-            default:
-                return rowValue;
+        if (!column.type) {
+            result.push('Column type cannot be empty');
         }
+        if (!column.name) {
+            result.push('Column name cannot be empty');
+        }
+        return result;
+    },
+    validateConstraints: (value: any, allValues: any[], rowDef: any) => {
+        if (rowDef.pk && value) {
+            const isOK = allValues.every(val => {
+                return String(val) !== String(value);
+            });
+            if (!isOK) {
+                return `Primary key ${value} should be unique.`;
+            }
+        }
+
+        if (rowDef.notnull) {
+            if (rowDef.dflt_value) {
+                return null;
+            }
+            if (value === '' || String(value).toUpperCase() === 'NULL') {
+                return `Value ${value} cannot be set to NULL.`;
+            }
+        }
+        
     },
 };
