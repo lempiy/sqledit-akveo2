@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ViewsService } from '../../views.service';
+import { Observable } from 'rxjs/Rx';
 
 @Injectable()
 export class AllViewsService {
@@ -8,11 +9,7 @@ export class AllViewsService {
 
   }
 
-  getData(): Promise<any> {
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        resolve(this._tables.allViewData);
-      }, 1000);
-    });
+  getData(): Observable<any> {
+    return this._tables.getAllViews();
   }
 }

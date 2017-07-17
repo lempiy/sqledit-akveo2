@@ -1,21 +1,23 @@
-import { Component, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, ViewChild, OnInit, OnDestroy } from '@angular/core';
 
 import { ChangeTableService } from '../../changeTable.service';
 import { LocalDataSource } from 'ng2-smart-table';
 
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { validators } from '../../../../table.validators';
+import { Subscription } from 'rxjs/Rx';
 
 @Component({
   selector: 'structure-table',
   templateUrl: './structure.html',
   styleUrls: ['./structure.scss']
 })
-export class Structure implements AfterViewInit {
+export class Structure implements OnInit, OnDestroy {
 
   query: string = '';
-  private sub: any;
+  private cons: Subscription[];
   private tabName: string;
+  inProcess: boolean;
 
   result: any = {
     status: '',
@@ -29,7 +31,9 @@ export class Structure implements AfterViewInit {
       violations: [],
       message: '',
     };
-  } 
+  }
+
+  name: string; 
 
   allTableData: any = {
     name: '',
@@ -57,6 +61,10 @@ export class Structure implements AfterViewInit {
   ];
 
   settings = {
+    actions: {
+      delete: false,
+      edit: false,
+    },
     add: {
       addButtonContent: '<i class="ion-ios-plus-outline"></i>',
       createButtonContent: '<i class="ion-checkmark"></i>',
@@ -133,20 +141,19 @@ export class Structure implements AfterViewInit {
   
   constructor(
     protected service: ChangeTableService, 
-    private route: ActivatedRoute) {
-    
+    private route: ActivatedRoute,
+    private router: Router) {
+    this.cons = [];
   }
 
-  ngOnInit() {
-    this.sub = this.route.parent.params.subscribe(params => {
-      this.tabName = params['name'];
-      Promise.all([this.service.getData(), this.service.getPragma()]).then((result: any[]) => {
-        const data = result[0];
-        const pragma = result[1];
-        // const curTable = Object.assign(data.find(table => table.name === this.tabName));
-        const curTable = Object.assign({}, data.find(table => table.name === 'CarriersExtraData'));
+  getAllData(name: string) {
+    this.cons.push(
+      this.service.getDataAndConstraits(name).subscribe(data => {
+        const { contraints } = data;
+        const curTable = Object.assign({}, data.data);
         this.allTableData = curTable;
-        this.allTableData.columns = pragma.map(column => {
+        this.name = curTable.name;
+        this.allTableData.columns = contraints.map(column => {
           const c = Object.assign({}, column, {
             pk: column.pk ? '\u26BF' : ' ',
             notnull: column.notnull ? '\u2611' : ' ',
@@ -155,15 +162,44 @@ export class Structure implements AfterViewInit {
           return Object.assign({}, item, c);
         });
         this.source.load(this.allTableData.columns);
-      });
-    });
+      }),
+    );
+  }
+
+  changeTableName() {
+    this.inProcess = true;
+    this.cons.push(
+      this.service.changeTableName(this.allTableData.name, this.name)
+        .subscribe(
+          data => {
+            Object.assign(this.result, {
+              status: 'success',
+              message: `Table name changed to ${this.name}.`,
+            });
+            this.allTableData.name = this.name;
+            window.location.reload();
+          },
+          error => {
+            Object.assign(this.result, {
+              status: 'fail',
+              message: `Failed to change for table ${this.allTableData.name}.`,
+              violations: [],
+            });
+          },
+          () => this.inProcess = false),
+    );
+  }
+
+  ngOnInit() {
+    this.cons.push(this.route.parent.params.subscribe(params => {
+        this.tabName = params['name'];
+        this.getAllData(this.tabName);
+      }),
+    );
   }
 
   ngOnDestroy() {
-    this.sub.unsubscribe();
-  }
-
-  ngAfterViewInit() {
+    this.cons.forEach(c => c.unsubscribe());
   }
 
   displayInputError(result) {

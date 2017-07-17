@@ -9,10 +9,12 @@ import { Pages } from './pages.component';
 import { PagesGuard } from './pages.guard';
 import { TablesService } from './tables/tables.service';
 
+import { AuthHttp } from './auth.service';
+
 @NgModule({
   imports: [CommonModule, AppTranslationModule, NgaModule, routing],
   declarations: [Pages],
-  providers: [PagesGuard, TablesService],
+  providers: [PagesGuard, TablesService, AuthHttp],
 })
 export class PagesModule {
 }

@@ -1,5 +1,6 @@
-import {Injectable} from '@angular/core';
+import { Injectable } from '@angular/core';
 import { TablesService } from '../../tables.service';
+import { Observable } from 'rxjs/Rx';
 
 @Injectable()
 export class AllTablesService {
@@ -8,11 +9,11 @@ export class AllTablesService {
 
   }
 
-  getData(): Promise<any> {
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        resolve(this._tables.allTableData);
-      }, 1000);
-    });
+  getData(): Observable<any> {
+    return this._tables.getAllTables();
+  }
+
+  deleteTable(name: string): Observable<any> {
+    return this._tables.deleteTable(name);
   }
 }

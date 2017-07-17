@@ -1,6 +1,7 @@
-import { Component, Input, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ChangeTableService } from '../../changeTable.service';
 import { ActivatedRoute } from '@angular/router';
+import { Subscription } from 'rxjs/Rx';
 
 @Component({
   selector: 'indexes',
@@ -10,23 +11,29 @@ import { ActivatedRoute } from '@angular/router';
 export class Indexes implements OnInit, OnDestroy {
   tableData: any;
   tabName: string;
-  sub: any;
+  cons: Subscription[];
   constructor(
     protected service: ChangeTableService,
     private route: ActivatedRoute) {
     // this.smartTableData = _basicTablesService.smartTableData;
+    this.cons = [];
+  }
+
+  getData(name: string) {
+    this.cons.push(
+      this.service.getIndexes(name).subscribe(data => this.tableData = data),
+    );
   }
 
   ngOnInit() {
-    this.sub = this.route.parent.params.subscribe(params => {
-      this.tabName = params['name'];
-      this.service.getData().then((data: any[]) => {
-        this.tableData = data.find(table => table.name === this.tabName).indexes;
-      });
-    });
+    this.cons.push(this.route.parent.params.subscribe(params => {
+        this.tabName = params['name'];
+        this.getData(this.tabName);
+      }),
+    );
   }
 
   ngOnDestroy() {
-    this.sub.unsubscribe();
+    this.cons.forEach(c => c.unsubscribe());
   }
 }

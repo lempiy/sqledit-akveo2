@@ -1,16 +1,18 @@
-import { Component, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
+import { Component, ViewChild, OnDestroy } from '@angular/core';
 
-import { ExecuteQueryService } from './executeQuery.service';
+import { QueriesService } from '../../queries.service';
 import { DatabaseService } from '../../../database/database.service';
+import { Subscription } from 'rxjs/Rx';
 
 @Component({
   selector: 'execute-query',
   templateUrl: './executeQuery.html',
   styleUrls: ['./executeQuery.scss']
 })
-export class ExecuteQuery implements AfterViewInit {
+export class ExecuteQuery implements OnDestroy {
 
   query: string = '';
+  cons: Subscription[];
 
   result: any = {
     status: '',
@@ -26,25 +28,22 @@ export class ExecuteQuery implements AfterViewInit {
     };
   }
 
-  constructor(protected service: ExecuteQueryService, public db: DatabaseService) {
-    
+  constructor(protected service: QueriesService, public db: DatabaseService) {
+    this.cons = [];
   }
 
-  ngAfterViewInit() {
+  ngOnDestroy() {
+    this.cons.forEach(c => c.unsubscribe());
   }
 
-  onDeleteConfirm(event): void {
-    if (window.confirm('Are you sure you want to delete?')) {
-      event.confirm.resolve();
-    } else {
-      event.confirm.reject();
-    }
-  }
   onSubmit(): void {
-    console.log(this.query)
-    Object.assign(this.result, {
-      status: 'success',
-      message: `Some server response goes here.`,
-    })
+    this.cons.push(
+      this.service.executeQuery(this.query).subscribe(data => {
+        Object.assign(this.result, {
+          status: 'success',
+          message: typeof data === 'object' ? JSON.stringify(data) : data,
+        });
+      }),
+    );
   }
 }

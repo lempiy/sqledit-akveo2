@@ -5,6 +5,7 @@ import { EditService } from './edit.service';
 import { LocalDataSource } from 'ng2-smart-table';
 
 import { validators } from '../../../../table.validators';
+import { Subscription } from 'rxjs/Rx';
 
 @Component({
   selector: 'edit-row',
@@ -12,7 +13,7 @@ import { validators } from '../../../../table.validators';
   styleUrls: ['./edit.scss']
 })
 export class Edit implements OnInit, OnDestroy {
-  sub: any;
+  cons: Subscription[];
   tabName: string;
   currentTable: any;
   query: string = '';
@@ -65,45 +66,51 @@ export class Edit implements OnInit, OnDestroy {
   }
   
   constructor(protected service: EditService, private route: ActivatedRoute) {
+    this.cons = [];
+  }
+
+  private getAllData(name: string) {
+    this.cons.push(
+      this.service.getAllAboutTable(name).subscribe(data => {
+        
+          this.currentTable = data.data;
+          this.editData = {
+            name: this.currentTable.name,
+            columns: this.currentTable.columns.map(column => ({
+              name: column.name,
+              input: '',
+              type: column.type,
+            })),
+          };
+        
+        this.constraints = data.contraints;
+          this.allRows = data.row.map(row => {
+            Object.keys(row).forEach(key => {
+              if (row[key] === null) {
+                const constraint = this.constraints.find(c => c.name === key);
+                row[key] = constraint.dflt_value || 'NULL';
+              }
+            });
+            return row;
+          });
+            
+          this.currentTable.columns.forEach(column => {
+            this.settings.columns[column.name] = {
+                title: column.name,
+                type: 'string',
+            };
+          });
+          this.source.load(this.allRows);
+      }),
+    );
   }
 
   ngOnInit() {
-    this.sub = this.route.parent.params.subscribe(params => {
-      this.tabName = params['name'];
-      this.service.getData().then((data: any[]) => {
-        this.allTables = Object.assign(this.allTables, data);
-        // this.currentTable = this.allTables.find(table => table.name === this.tabName);
-        this.currentTable = this.allTables.find(table => table.name === 'CarriersExtraData');
-        this.editData = {
-          name: this.currentTable.name,
-          columns: this.currentTable.columns.map(column => ({
-            name: column.name,
-            input: '',
-            type: column.type,
-          })),
-        };
-      });
-      Promise.all([this.service.getRows(), this.service.getConstraits()]).then((data: any[]) => {
-        this.constraints = data[1];
-        this.allRows = data[0].map(row => {
-          Object.keys(row).forEach(key => {
-            if (row[key] === null) {
-              const constraint = this.constraints.find(c => c.name === key);
-              row[key] = constraint.dflt_value || 'NULL';
-            }
-          });
-          return row;
-        });
-        Object.keys(this.allRows[0]).forEach(key => {
-          this.settings.columns[key] = {
-              title: key,
-              type: 'string',
-              //filter: false,
-          };
-        });
-        this.source.load(this.allRows);
-      });
-    });
+    this.cons.push(this.route.parent.params.subscribe(params => {
+        this.tabName = params['name'];
+        this.getAllData(this.tabName);
+      }),
+    );
   }
 
   onEditConfirm($event) {
@@ -195,7 +202,7 @@ export class Edit implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.sub.unsubscribe();
+    this.cons.forEach(c => c.unsubscribe());
   }
 
   onSubmit(): void {

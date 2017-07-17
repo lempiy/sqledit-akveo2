@@ -1,6 +1,11 @@
 import {Injectable} from '@angular/core';
+// import { AuthHttp } from '../authHttp.service';
+// import 'rxjs/add/operator/map';
 
 @Injectable()
+class Data {
+    name: string;
+}
 export class DatabaseService {
     private _previousDB: string;
     private _currentDB: string;
@@ -31,4 +36,9 @@ export class DatabaseService {
             this.previousDataBase = db;
         }
     }
+
+    // applyNewDB(data: Data) {
+    //     return this.http.post('/db/set', data)
+    //         .map(response => response.json());
+    // }
 }

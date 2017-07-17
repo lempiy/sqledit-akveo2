@@ -1,5 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { Subscription } from 'rxjs/Rx';
 
 import { ChangeTableService } from '../../changeTable.service';
 
@@ -11,7 +12,7 @@ import { ChangeTableService } from '../../changeTable.service';
 export class Views implements OnInit, OnDestroy {
 
   query: string = '';
-  sub: any;
+  cons: Subscription[];
   tabName: string;
 
   result: any = {
@@ -33,20 +34,25 @@ export class Views implements OnInit, OnDestroy {
   constructor(
     protected service: ChangeTableService,
     private route: ActivatedRoute) {
+      this.cons = [];
+  }
 
+  getData(name: string) {
+    this.cons.push(
+      this.service.getTable(name).subscribe(data => this.allViewData = data ? 
+        data.views : []),
+    );
   }
 
   ngOnInit() {
-    this.sub = this.route.parent.params.subscribe(params => {
-      this.tabName = params['name'];
-      this.service.getData().then((data: any[]) => {
-        this.allViewData = data.find(table => table.name === this.tabName).views;
-      });
-    });
+    this.cons.push(this.route.parent.params.subscribe(params => {
+        this.tabName = params['name'];
+      }),
+    );
   }
 
   ngOnDestroy() {
-    this.sub.unsubscribe();
+    this.cons.forEach(c => c.unsubscribe());
   }
 
   deleteView($event) {
@@ -56,6 +62,6 @@ export class Views implements OnInit, OnDestroy {
     Object.assign(this.result, {
       status: 'success',
       message: `View ${$event.name} was deleted.`,
-    })
+    });
   }
 }

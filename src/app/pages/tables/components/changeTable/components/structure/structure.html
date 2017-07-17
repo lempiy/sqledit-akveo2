@@ -1,13 +1,24 @@
 <div>
     <div class="form-group">
-    <label for="input01">Table name</label>
-    <input 
-        class="form-control" 
-        id="inputname" 
-        placeholder="Example: order" 
-        type="text"
-        #inputNameElement
-        [(ngModel)]="allTableData.name">
+        <label for="inputname">Table name</label>
+        <div class="input-group">
+            <input 
+                class="form-control" 
+                id="inputname" 
+                placeholder="Example: order" 
+                type="text"
+                #inputNameElement
+                [(ngModel)]="name">
+            <span class="input-group-btn">
+                <button 
+                    class="btn btn-success" 
+                    type="button" 
+                    [disabled]="inProcess"
+                    (click)="changeTableName()">
+                        Change
+                </button>
+            </span>
+        </div>
     </div>
     <sy-status 
         [status]="result.status"
@@ -24,12 +35,4 @@
             (deleteConfirm)="onDeleteConfirm($event)">
         </ng2-smart-table>
     </div>
-    <button 
-        class="btn btn-success btn-with-icon submit-btn btn pull-right" 
-        type="button"
-        (click)="onSubmit()"
-        [disabled]="!allTableData.name"
-        title="Submit new table">
-        <i class="ion-android-checkmark-circle"></i>Apply
-    </button>
 </div>

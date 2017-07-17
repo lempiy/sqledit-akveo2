@@ -9,6 +9,10 @@ sy-status + .tabler {
 }
 
 :host /deep/ {
+  .tabler {
+    overflow-x: scroll;
+  }
+
   ng2-smart-table {
     th, td {
       border: 1px solid $border-light !important;

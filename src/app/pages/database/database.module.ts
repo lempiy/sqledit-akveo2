@@ -7,6 +7,8 @@ import { Database } from './database.component';
 import { DatabaseService } from './database.service';
 import { routing }       from './database.routing';
 
+import { ChangeDatabaseService } from './changeDatabase.service';
+
 
 @NgModule({
   imports: [
@@ -14,13 +16,14 @@ import { routing }       from './database.routing';
     ReactiveFormsModule,
     FormsModule,
     NgaModule,
-    routing
+    routing,
   ],
   declarations: [
-    Database
+    Database,
   ],
   providers: [
     DatabaseService,
+    ChangeDatabaseService,
   ]
 })
 export class DatabaseModule {}

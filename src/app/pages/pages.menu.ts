@@ -326,30 +326,6 @@ export const PAGES_MENU = [
               }
             }
           },
-          {
-            path: 'addrow',
-            data: {
-              menu: {
-                title: 'general.menu.addrow',
-              }
-            }
-          },
-          {
-            path: 'updaterow',
-            data: {
-              menu: {
-                title: 'general.menu.updaterow',
-              },
-            },
-          },
-          {
-            path: 'deleterow',
-            data: {
-              menu: {
-                title: 'general.menu.deleterow',
-              },
-            },
-          },
         ]
       },
       // {

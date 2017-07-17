@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ViewsService } from '../../views.service';
+import { Observable } from 'rxjs/Rx';
 
 @Injectable()
 export class ChangeViewService {
@@ -13,11 +14,10 @@ export class ChangeViewService {
 
   }
 
-  getData(): Promise<any> {
-    return new Promise((resolve, reject) => {
-      // setTimeout(() => {
-        resolve(this._tables.selectedView);
-      // }, 2000);
+  getData(name: string): Observable<any> {
+    return this._tables.getAllViews().map(data => {
+      return data.find(view => view.name === name);
     });
   }
+
 }

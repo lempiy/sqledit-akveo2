@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { TablesService } from '../../../../tables.service';
+import { Observable } from 'rxjs/Rx';
 
 @Injectable()
 export class EditService {
@@ -14,27 +15,34 @@ export class EditService {
 
   }
 
-  getData(): Promise<any> {
-    return new Promise((resolve, reject) => {
-      // setTimeout(() => {
-        resolve(this._tables.allTableData);
-      // }, 2000);
-    });
+  getData(name: string): Observable<any> {
+    return this._tables.getTable(name);
   }
 
-  getConstraits(): Promise<any> {
-    return new Promise((resolve, reject) => {
-      // setTimeout(() => {
-        resolve(this._tables.tablePragma);
-      // }, 2000);
-    });
+  getConstraits(name: string): Observable<any> {
+    return this._tables.getPragma(name);
+  }
+
+  getAllAboutTable(name: string): Observable<EditData> {
+    return Observable.forkJoin([
+        this.getData(name), 
+        this.getConstraits(name), 
+        this.getRows(name),
+      ])
+      .map(response => ({
+        data: response[0],
+        contraints: response[1],
+        row: response[2],
+      }));
   }
   
-  getRows(): Promise<any> {
-    return new Promise((resolve, reject) => {
-      // setTimeout(() => {
-        resolve(this._tables.dummyRows);
-      // }, 2000);
-    });
+  getRows(name: string): Observable<any> {
+    return this._tables.getRows(name);
   }
+}
+
+class EditData {
+  data: any;
+  contraints: any;
+  row: any;
 }
