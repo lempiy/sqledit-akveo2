@@ -12,4 +12,8 @@ export class AllViewsService {
   getData(): Observable<any> {
     return this._tables.getAllViews();
   }
+
+  deleteView(viewName: string): Observable<any> {
+      return this._tables.deleteView(viewName);
+  }
 }

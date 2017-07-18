@@ -46,4 +46,38 @@ export class TablesService {
             new_table_name: newName,
         }).map(data => data.json());
     }
+
+    createNewColumn(tableName: string, fieldName: string, ddl: string[]) {
+        return this.http.post('/tables/column', {
+            table_name: tableName,
+            field_name: fieldName,
+            ddl: ddl.join(' '),
+        }).map(data => data.json());
+    }
+
+    addRow(tableName: string, rowData: any[]) {
+        return this.http.post('/query/row', {
+            table_name: tableName,
+            data: rowData,
+        }).map(data => data.json());
+    }
+
+    editRow(tableName: string, rowData: any[], where: string) {
+        return this.http.put('/query/row', {
+            table_name: tableName,
+            data: rowData,
+            where,
+        }).map(data => data.json());
+    }
+
+    deleteRow(tableName: string, where: string) {
+        return this.http.delete('/query/row', { body: {
+            table_name: tableName,
+            where,
+        }}).map(data => data.json());
+    }
+
+    createTable(table: any) {
+        return this.http.post('/tables/table', table).map(data => data.json());
+    }
 }

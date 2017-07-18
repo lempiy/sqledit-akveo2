@@ -3,6 +3,8 @@ import { Component, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import { AddTableService } from './addTable.service';
 import { LocalDataSource } from 'ng2-smart-table';
 import { DatabaseService } from '../../../database/database.service';
+import { Observable, Subscription } from 'rxjs/Rx';
+import { GlobalState } from '../../../../global.state';
 
 @Component({
   selector: 'add-table',
@@ -12,6 +14,7 @@ import { DatabaseService } from '../../../database/database.service';
 export class AddTable implements AfterViewInit {
 
   query: string = '';
+  cons: Subscription[];
 
   result: any = {
     status: '',
@@ -68,16 +71,18 @@ export class AddTable implements AfterViewInit {
       deleteButtonContent: '<i class="ion-trash-a"></i>',
       confirmDelete: true,
     },
+    pager: {
+      perPage: 15,
+    },
     noDataMessage: 'No columns',
     columns: {
       name: {
         title: 'Name',
+        type: 'string',
         filter: false,
-        type: 'string'
       },
-      fieldType: {
+      type: {
         title: 'Field Type',
-        filter: false,
         editor: {
           type: 'completer',
           config: {
@@ -88,20 +93,48 @@ export class AddTable implements AfterViewInit {
             },
           },
         },
-      },
-      ddl: {
-        title: 'DDL',
         filter: false,
-        selectText: 'Example: UNIQUE NOT NULL',
-        type: 'string',
       },
-    }
+      notnull: {
+        title: 'Not NULL',
+        type: 'text',
+        filter: false,
+        editor: {
+          type: 'checkbox',
+          config: {
+            true: '\u2611',
+            false: ' ',
+          },
+        },
+      },
+      pk: {
+        title: 'Primary Key',
+        type: 'text',
+        filter: false,
+        editor: {
+          type: 'checkbox',
+          config: {
+            true: '\u26BF',
+            false: ' ',
+          },
+        },
+      },
+      dflt_value: {
+        title: 'Default Value',
+        type: 'string',
+        filter: false,
+      },
+    },
   };
 
   source: LocalDataSource = new LocalDataSource();
   @ViewChild('inputNameElement') inputNameElement: ElementRef;
   
-  constructor(protected service: AddTableService, public db: DatabaseService) {
+  constructor(
+    protected service: AddTableService, 
+    public db: DatabaseService,
+    private gs: GlobalState) {
+    this.cons = [];
     this.service.getData().then((data) => {
       this.allTableData = Object.assign(this.allTableData, data);
       this.source.load(data.data);
@@ -122,18 +155,29 @@ export class AddTable implements AfterViewInit {
 
   onSubmit(): void {
     this.source.getAll().then(data => {
-      console.log({
-        name: this.allTableData.name,
-        columns: data,
-      })
-      Object.assign(this.result, {
-        status: 'fail',
-        message: `Table ${this.allTableData.name} was not created.`,
-        violations: [
-          'Wrong DDL data',
-          'Table with such name already exists.',
-        ],
-      })
-    })
+      if (!data.length) {
+        Object.assign(this.result, {
+          status: 'fail',
+          message: `Table ${this.allTableData.name} is empty.`,
+        });
+      }
+      const body = data.reduce((acc, col) => {
+        acc.fields.push({
+          name: col.name,
+          type: col.type,
+        });
+        return acc;
+      }, { table_name: this.allTableData.name, fields: [] });
+      
+      this.cons.push(
+        this.service.createTable(body).subscribe(res => {
+          Object.assign(this.result, {
+            status: 'success',
+            message: `Table ${this.allTableData.name} was created.`,
+          });
+          this.gs.notifyDataChanged('created.table', this.allTableData.name);
+        }),
+      );
+    });
   }
 }

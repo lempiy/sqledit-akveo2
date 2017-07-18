@@ -59,9 +59,25 @@ export class ChangeView implements OnInit, OnDestroy {
   }
 
   onSubmit(): void {
-      Object.assign(this.result, {
-        status: 'success',
-        message: `View ${this.changeViewData.name} has been changed.`,
-      })
+      this.cons.push(
+        this.service.changeView({
+          name: this.changeViewData.name,
+          sql: this.changeViewData.sql,
+        }).subscribe(
+          data => {
+            Object.assign(this.result, {
+              status: 'success',
+              message: `View ${this.changeViewData.name} has been changed.`,
+            });
+          },
+          err => {
+            Object.assign(this.result, {
+              status: 'fail',
+              message: `View ${this.changeViewData.name} hasn't been changed.`,
+            });
+          },
+        ),
+      );
+      
   }
 }

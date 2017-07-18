@@ -5,7 +5,7 @@ import { EditService } from './edit.service';
 import { LocalDataSource } from 'ng2-smart-table';
 
 import { validators } from '../../../../table.validators';
-import { Subscription } from 'rxjs/Rx';
+import { Subscription, Observable } from 'rxjs/Rx';
 
 @Component({
   selector: 'edit-row',
@@ -48,7 +48,7 @@ export class Edit implements OnInit, OnDestroy {
     },
     delete: {
       deleteButtonContent: '<i class="ion-trash-a"></i>',
-      // confirmDelete: true,
+      confirmDelete: true,
     },
     pager: {
       perPage: 15,
@@ -93,6 +93,7 @@ export class Edit implements OnInit, OnDestroy {
             });
             return row;
           });
+          console.log(this.allRows)
             
           this.currentTable.columns.forEach(column => {
             this.settings.columns[column.name] = {
@@ -129,19 +130,110 @@ export class Edit implements OnInit, OnDestroy {
       $event.confirm.reject();
       window.scrollTo(0, 0);
     } else {
-      $event.confirm.resolve();
-      this.clearResult();
-      const withNull = keys.reduce((acc, key) => {
-        if (newData[key] === '') {
-          const constraint = this.constraints.find(c => c.name === key);
-          acc[key] = constraint.dflt_value || 'NULL';
+      this.cons.push(
+        this.editRow(newData, $event.data).subscribe(res => {
+          $event.confirm.resolve();
+          this.clearResult();
+          const withNull = keys.reduce((acc, key) => {
+            if (newData[key] === '') {
+              const constraint = this.constraints.find(c => c.name === key);
+              acc[key] = constraint.dflt_value || 'NULL';
+            } else {
+              acc[key] = newData[key];
+            }
+            return acc;
+          }, {});
+          setTimeout(() => $event.source.update($event.data, withNull));
+        }),
+      );
+    }
+  }
+
+  onDeleteConfirm($event): void {
+    if (window.confirm('Are you sure you want to delete?')) {
+      this.cons.push(
+        this.deleteRow($event.data).subscribe(data => {
+          $event.confirm.resolve();
+        }),
+      );
+    } else {
+      $event.confirm.reject();
+    }
+  }
+
+  deleteRow(oldData): Observable<any> {
+    let where = '';
+    const notNullValues = [];
+    const pk = Object.keys(oldData).find(key => {
+      if (oldData[key] && oldData[key] !== 'NULL') {
+        notNullValues.push({
+          column: key,
+          value: oldData[key],
+        });
+      }
+      return this.constraints.find(c => c.pk && c.name === key);
+    });
+    if (pk) {
+      where = `${pk}=${oldData[pk]}`;
+    } else {
+      where = notNullValues.reduce((acc, c, i) => {
+        const type = this.currentTable.columns.find(col => col.name === c.column).type;
+        if (validators.isNumber(type)) {
+          acc += acc.length ? `AND ${c.column}=${c.value} ` : `${c.column}=${c.value} `;
         } else {
-          acc[key] = newData[key];
+          acc += acc.length ? `AND ${c.column}='${c.value}' ` : `${c.column}='${c.value}' `;
         }
         return acc;
-      }, {});
-      setTimeout(() => $event.source.update($event.data, withNull));
+      }, '');
     }
+    return this.service.deleteRow(this.tabName, where);
+  }
+
+  addRow(newData): Observable<any> {
+    const rowData = Object.keys(newData).reduce((acc, key) => {
+      if (newData[key] && newData[key] !== 'NULL') {
+        acc.push({
+          column: key,
+          value: newData[key],
+        });
+      }
+      return acc;
+    }, []);
+    return this.service.addRow(this.tabName, rowData);
+  }
+
+  editRow(newData, oldData): Observable<any> {
+    const rowData = Object.keys(newData).reduce((acc, key) => {
+      if (newData[key] && newData[key] !== 'NULL') {
+        acc.push({
+          column: key,
+          value: newData[key],
+        });
+      }
+      return acc;
+    }, []);
+    let where = '';
+    const notNullValues = [];
+    const pk = Object.keys(oldData).find(key => {
+      if (oldData[key]) {
+        notNullValues.push({
+          column: key,
+          value: oldData[key],
+        });
+      }
+      return this.constraints.find(c => c.pk && c.name === key);
+    });
+    if (pk) {
+      where = `${pk}=${oldData[pk]}`;
+    } else {
+      where = notNullValues.reduce((acc, c) => {
+        const type = this.currentTable.columns.find(c => c.name === c.column).type;
+        console.log(type)
+        acc += acc.length ? `AND ${c.column}="${c.value}" ` : `${c.column}="${c.value}" `;
+        return acc;
+      }, '');
+    }
+    return this.service.editRow(this.tabName, rowData, where);
   }
 
   onAddConfirm($event) {
@@ -161,18 +253,25 @@ export class Edit implements OnInit, OnDestroy {
         }
       });
 
-      $event.confirm.resolve();
-      this.clearResult();
-      
-      setTimeout(() => {
-        const { data } = $event.source;
-        const el = data.find(element => {
-          return keys.every(key => {
-            return element[key] === newData[key];
+      this.cons.push(
+        this.addRow(newData).subscribe(res => {
+          $event.confirm.resolve();
+          this.clearResult();
+
+          setTimeout(() => {
+            const { data } = $event.source;
+            const el = data.find(element => {
+              return keys.every(key => {
+                return element[key] === newData[key];
+              });
+            });
+            $event.source.update(el, withNull);
           });
-        });
-        $event.source.update(el, withNull);
-      });
+        },
+        err => {
+
+        }),
+      );
     }
   }
 
@@ -214,6 +313,6 @@ export class Edit implements OnInit, OnDestroy {
     Object.assign(this.result, {
       status: 'success',
       message: `Succcesfully added row to table ${this.editData.name}.`,
-    })
+    });
   }
 }

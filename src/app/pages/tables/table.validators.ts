@@ -133,4 +133,19 @@ export const validators = {
         }
         
     },
+    isNumber: (rowType) => {
+        switch (rowType.toUpperCase()) {
+            case 'INTEGER':
+            case 'INT':
+            case 'FLOAT':
+            case 'NUMERIC':
+            case 'REAL':
+            case 'BIGINT':
+            case 'SMALLINT':
+            case 'MONEY':
+                return true;
+            default:
+                return false;
+        }
+    },
 };

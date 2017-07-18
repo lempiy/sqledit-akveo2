@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { TablesService } from '../../tables.service';
+import { Observable } from 'rxjs/Rx';
 
 @Injectable()
 export class AddTableService {
@@ -19,5 +20,8 @@ export class AddTableService {
         resolve(this.addTableData);
       // }, 2000);
     });
+  }
+  createTable(table: any): Observable<any> {
+    return this._tables.createTable(table);
   }
 }

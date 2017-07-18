@@ -41,6 +41,23 @@ export class Pages implements OnInit, OnDestroy {
     );
   }
 
+  addTable(tableName: string) {
+    const tablesSection = <any>PAGES_MENU
+      .find(section => section.path === 'pages').children
+      .find(section => section.path === 'tables');
+    const i = tablesSection.children.findIndex((link, index) => index > 1 && 
+      link.data.menu.title > tableName);
+    tablesSection.children.splice(i, 0, {
+        path: [`/pages`, `tables`, `${tableName}`],
+        data: {
+          menu: {
+            title: tableName,
+            pathMatch: 'prefix',
+          },
+        },
+    });
+  }
+
   updateTable(data) {
     const tablesSection = <any>PAGES_MENU
       .find(section => section.path === 'pages').children
@@ -75,6 +92,10 @@ export class Pages implements OnInit, OnDestroy {
     this.initMenu();
     this._gs.subscribe('changed.table', (data) => {
       this.updateTable(data);
+      this._menuService.updateMenuByRoutes(<Routes>PAGES_MENU);
+    });
+    this._gs.subscribe('created.table', (data) => {
+      this.addTable(data);
       this._menuService.updateMenuByRoutes(<Routes>PAGES_MENU);
     });
   }

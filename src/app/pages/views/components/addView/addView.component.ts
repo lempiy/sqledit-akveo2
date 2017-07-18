@@ -1,7 +1,7 @@
-import { Component, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
+import { Component, ViewChild, ElementRef, AfterViewInit, OnDestroy } from '@angular/core';
 
 import { AddViewService } from './addView.service';
-import { LocalDataSource } from 'ng2-smart-table';
+import { Subscription } from 'rxjs/Rx';
 
 import { DatabaseService } from '../../../database/database.service';
 
@@ -10,13 +10,14 @@ import { DatabaseService } from '../../../database/database.service';
   templateUrl: './addView.html',
   styleUrls: ['./addView.scss']
 })
-export class AddView implements AfterViewInit {
+export class AddView implements AfterViewInit, OnDestroy {
 
   query: string = '';
+  cons: Subscription[];
 
   allViewData: any = {
     name: '',
-    data: [],
+    sql: '',
   };
 
   result: any = {
@@ -96,18 +97,18 @@ export class AddView implements AfterViewInit {
     }
   };
 
-  source: LocalDataSource = new LocalDataSource();
   @ViewChild('inputNameElement') inputNameElement: ElementRef;
   
   constructor(protected service: AddViewService, public db: DatabaseService) {
-    this.service.getData().then((data) => {
-      this.allViewData = Object.assign(this.allViewData, data);
-      this.source.load(data.data);
-    });
+    this.cons = [];
   }
 
   ngAfterViewInit() {
     (<HTMLInputElement>this.inputNameElement.nativeElement).focus();
+  }
+
+  ngOnDestroy() {
+    this.cons.forEach(c => c.unsubscribe());
   }
 
   onDeleteConfirm(event): void {
@@ -117,16 +118,15 @@ export class AddView implements AfterViewInit {
       event.confirm.reject();
     }
   }
+
   onSubmit(): void {
-    this.source.getAll().then(data => {
-      console.log({
-        name: this.allViewData.name,
-        columns: data,
-      })
-      Object.assign(this.result, {
-        status: 'success',
-        message: `View ${this.allViewData.name} has been created.`,
-      })
-    })
+    this.cons.push(
+      this.service.createView(this.allViewData).subscribe(data => {
+          Object.assign(this.result, {
+            status: 'success',
+            message: `View ${this.allViewData.name} has been created.`,
+          });
+      }),
+    );
   }
 }

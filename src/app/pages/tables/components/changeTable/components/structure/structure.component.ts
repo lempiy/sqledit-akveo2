@@ -240,7 +240,31 @@ export class Structure implements OnInit, OnDestroy {
       return event.confirm.reject();
     }
     this.clearResult();
-    return event.confirm.resolve();
+    return this.createColumn(event.newData, event.confirm);
+  }
+
+  createColumn(newData: any, confirm: any) {
+    if (!newData.name || !newData.type) {
+      return;
+    }
+    const ddl = [];
+    ddl.push(newData.type);
+    if (newData.dflt_value) {
+      ddl.push(`DEFAULT ${newData.dflt_value}`);
+    }
+    if (newData.notnull && newData.notnull !== ' ') {
+      ddl.push(`NOT NULL`);
+    }
+    if (newData.pk && newData.pk !== ' ') {
+      ddl.push(`PRIMARY KEY`);
+    }
+    this.cons.push(
+      this.service.createNewColumn(this.allTableData.name, newData.name, ddl)
+        .subscribe(data => {
+          console.log(data);
+          confirm.resolve();
+        })
+    )
   }
 
   onDeleteConfirm(event): void {

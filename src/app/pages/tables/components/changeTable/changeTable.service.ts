@@ -41,6 +41,10 @@ export class ChangeTableService {
   changeTableName(oldName: string, newName: string): Observable<any> {
     return this._tables.updateTableName(oldName, newName);
   }
+
+  createNewColumn(tableName: string, fieldName: string, ddl: string[]) {
+    return this._tables.createNewColumn(tableName, fieldName, ddl);
+  }
 }
 
 class Structure {

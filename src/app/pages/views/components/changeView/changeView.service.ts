@@ -20,4 +20,7 @@ export class ChangeViewService {
     });
   }
 
+  changeView(data: any): Observable<any>  {
+    return this._tables.updateView(data);
+  }
 }

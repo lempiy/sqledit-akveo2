@@ -53,12 +53,24 @@ export class AllViews implements OnInit, OnDestroy {
   }
 
   deleteView($event) {
-    this.allViewData.splice(
-      this.allViewData.findIndex(view => view.name === $event.name), 
-    1);
-    Object.assign(this.result, {
-      status: 'success',
-      message: `View ${$event.name} was deleted.`,
-    })
+    if (!window.confirm('Are you sure you want to delete this view?')) {
+      return;
+    }
+    this.cons.push(
+      this.service.deleteView($event.name).subscribe(data => {
+        this.allViewData.splice(
+          this.allViewData.findIndex(view => view.name === $event.name), 
+        1);
+        Object.assign(this.result, {
+          status: 'success',
+          message: `View ${$event.name} was deleted.`,
+        });
+      }, err => {
+        Object.assign(this.result, {
+          status: 'fail',
+          message: `View ${$event.name} was not deleted.`,
+        });
+      }),
+    );
   }
 }

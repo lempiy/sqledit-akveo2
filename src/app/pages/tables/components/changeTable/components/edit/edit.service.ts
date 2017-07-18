@@ -39,6 +39,27 @@ export class EditService {
   getRows(name: string): Observable<any> {
     return this._tables.getRows(name);
   }
+
+  addRow(tableName: string, rowData: Row[]) {
+      return this._tables.addRow(tableName, rowData);
+  }
+
+  editRow(tableName: string, rowData: Row[], where: string) {
+      rowData = rowData.map(c => {
+        c.value = `${c.value}`;
+        return c;
+      });
+      return this._tables.editRow(tableName, rowData, where);
+  }
+
+  deleteRow(tableName: string, where: string) {
+    return this._tables.deleteRow(tableName, where);
+  }
+}
+
+class Row {
+  name: string;
+  value: string;
 }
 
 class EditData {

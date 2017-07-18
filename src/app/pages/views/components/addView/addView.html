@@ -7,14 +7,19 @@
         <input 
           class="form-control" 
           id="input01" 
-          placeholder="Example: Premium Orders" 
+          placeholder="Example: PremiumOrders" 
           type="text"
           #inputNameElement
           [(ngModel)]="allViewData.name">
       </div>
       <div class="form-group">
           <label for="textarea01">SQL</label>
-          <textarea class="form-control" id="textarea01" placeholder="Type new view definition here..."></textarea>
+          <textarea 
+            class="form-control" 
+            id="textarea01"
+            [(ngModel)]="allViewData.sql"
+            placeholder="CREATE VIEW '{{allViewData.name}}' AS ...">
+      </textarea>
       </div>
       <sy-status 
         [status]="result.status"
