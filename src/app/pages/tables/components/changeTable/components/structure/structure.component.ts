@@ -2,10 +2,13 @@ import { Component, ViewChild, OnInit, OnDestroy } from '@angular/core';
 
 import { ChangeTableService } from '../../changeTable.service';
 import { LocalDataSource } from 'ng2-smart-table';
+import { Location } from '@angular/common';
 
 import { ActivatedRoute, Router } from '@angular/router';
 import { validators } from '../../../../table.validators';
-import { Subscription } from 'rxjs/Rx';
+import { Subscription, Observable } from 'rxjs/Rx';
+
+import { GlobalState } from '../../../../../../global.state';
 
 @Component({
   selector: 'structure-table',
@@ -142,7 +145,9 @@ export class Structure implements OnInit, OnDestroy {
   constructor(
     protected service: ChangeTableService, 
     private route: ActivatedRoute,
-    private router: Router) {
+    private location: Location,
+    private router: Router,
+    private gs: GlobalState) {
     this.cons = [];
   }
 
@@ -158,6 +163,10 @@ export class Structure implements OnInit, OnDestroy {
             pk: column.pk ? '\u26BF' : ' ',
             notnull: column.notnull ? '\u2611' : ' ',
           });
+          // TODO: fix backend
+          if (!curTable.columns) {
+            return Object.assign({}, c);
+          }
           const item = curTable.columns.find(col => col.name === column.name);
           return Object.assign({}, item, c);
         });
@@ -176,8 +185,18 @@ export class Structure implements OnInit, OnDestroy {
               status: 'success',
               message: `Table name changed to ${this.name}.`,
             });
-            this.allTableData.name = this.name;
-            window.location.reload();
+            // Wait until DB proccess
+            setTimeout(() => {
+                this.gs.notifyDataChanged('changed.table', { oldName: this.allTableData.name, newName: this.name });
+                this.allTableData.name = this.name;
+                this.router.navigate([`/pages/tables/${this.name}/structure`], 
+                {
+                  queryParams: {
+                    rename: true,
+                  },
+                });
+              },
+            );
           },
           error => {
             Object.assign(this.result, {
@@ -193,6 +212,10 @@ export class Structure implements OnInit, OnDestroy {
   ngOnInit() {
     this.cons.push(this.route.parent.params.subscribe(params => {
         this.tabName = params['name'];
+        if (this.route.snapshot.queryParams['rename']) {
+          this.location.replaceState(`/pages/tables/${this.tabName}/structure`);
+          return;
+        }
         this.getAllData(this.tabName);
       }),
     );
@@ -230,10 +253,6 @@ export class Structure implements OnInit, OnDestroy {
   
   onSubmit(): void {
     this.source.getAll().then(data => {
-      console.log({
-        name: this.allTableData.name,
-        columns: data,
-      });
       Object.assign(this.result, {
         status: 'success',
         message: `Table ${this.allTableData.name} has been edited.`,

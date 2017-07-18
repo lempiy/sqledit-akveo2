@@ -7,6 +7,8 @@ import { TablesService } from './tables/tables.service';
 
 import { Subscription } from 'rxjs/Rx';
 
+import { GlobalState } from '../global.state';
+
 @Component({
   selector: 'pages',
   template: `
@@ -26,6 +28,7 @@ export class Pages implements OnInit, OnDestroy {
   constructor(
     private _menuService: BaMenuService, 
     private _tables: TablesService,
+    private _gs: GlobalState,
   ) {
   this.cons = [];
   }
@@ -33,27 +36,47 @@ export class Pages implements OnInit, OnDestroy {
   initMenu() {
     this.cons.push(
       this._tables.getAllTables().subscribe(data => {
-        const tablesSection = PAGES_MENU
-          .find(section => section.path === 'pages').children
-          .find(section => section.path === 'tables');
-        tablesSection.children = tablesSection.children.concat(
-          data.map(table => ({
-            path: [`/pages`, `tables`, `${table.name}`],
-            data: {
-              menu: {
-                title: table.name,
-                pathMatch: 'prefix',
-              },
-            },
-          })),
-        );
-        this._menuService.updateMenuByRoutes(<Routes>PAGES_MENU);
+        this._initMenu(data);
       }),
     );
   }
 
+  updateTable(data) {
+    const tablesSection = <any>PAGES_MENU
+      .find(section => section.path === 'pages').children
+      .find(section => section.path === 'tables');
+    const tableLink = tablesSection.children
+      .find(link => link.data.menu.title === data.oldName);
+    tablesSection.data.menu.expanded = true;
+    tableLink.path = [`/pages`, `tables`, `${data.newName}`],
+    tableLink.data.menu.title = data.newName;
+    tableLink.data.menu.selected = true;
+  }
+
+  private _initMenu(data: any) {
+    const tablesSection = PAGES_MENU
+      .find(section => section.path === 'pages').children
+      .find(section => section.path === 'tables');
+    tablesSection.children = tablesSection.children.concat(
+      data.map(table => ({
+        path: [`/pages`, `tables`, `${table.name}`],
+        data: {
+          menu: {
+            title: table.name,
+            pathMatch: 'prefix',
+          },
+        },
+      })),
+    );
+    this._menuService.updateMenuByRoutes(<Routes>PAGES_MENU);
+  }
+
   ngOnInit() {
     this.initMenu();
+    this._gs.subscribe('changed.table', (data) => {
+      this.updateTable(data);
+      this._menuService.updateMenuByRoutes(<Routes>PAGES_MENU);
+    });
   }
 
   ngOnDestroy() {

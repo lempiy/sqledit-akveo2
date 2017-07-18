@@ -6,6 +6,7 @@ import { DataTableModule } from "angular2-datatable";
 import { HttpModule } from "@angular/http";
 import { HotTable, HotTableModule } from 'ng2-handsontable';
 import { Ng2SmartTableModule } from 'ng2-smart-table';
+import { ActivatedRouteSnapshot } from '@angular/router';
 
 
 import { routing } from './changeTable.routing';
