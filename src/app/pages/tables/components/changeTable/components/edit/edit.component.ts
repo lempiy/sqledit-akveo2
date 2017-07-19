@@ -175,6 +175,8 @@ export class Edit implements OnInit, OnDestroy {
     });
     if (pk) {
       where = `${pk}=${oldData[pk]}`;
+    } else if (oldData.rowid) { 
+      where = `rowid=${oldData.rowid}`;
     } else {
       where = notNullValues.reduce((acc, c, i) => {
         const type = this.currentTable.columns.find(col => col.name === c.column).type;
@@ -215,7 +217,7 @@ export class Edit implements OnInit, OnDestroy {
     let where = '';
     const notNullValues = [];
     const pk = Object.keys(oldData).find(key => {
-      if (oldData[key]) {
+      if (oldData[key] && oldData[key] !== 'NULL') {
         notNullValues.push({
           column: key,
           value: oldData[key],
@@ -225,11 +227,16 @@ export class Edit implements OnInit, OnDestroy {
     });
     if (pk) {
       where = `${pk}=${oldData[pk]}`;
+    } else if (oldData.rowid) { 
+      where = `rowid=${oldData.rowid}`;
     } else {
-      where = notNullValues.reduce((acc, c) => {
-        const type = this.currentTable.columns.find(c => c.name === c.column).type;
-        console.log(type)
-        acc += acc.length ? `AND ${c.column}="${c.value}" ` : `${c.column}="${c.value}" `;
+      where = notNullValues.reduce((acc, c, i) => {
+        const type = this.currentTable.columns.find(col => col.name === c.column).type;
+        if (validators.isNumber(type)) {
+          acc += acc.length ? `AND ${c.column}=${c.value} ` : `${c.column}=${c.value} `;
+        } else {
+          acc += acc.length ? `AND ${c.column}='${c.value}' ` : `${c.column}='${c.value}' `;
+        }
         return acc;
       }, '');
     }
@@ -277,6 +284,9 @@ export class Edit implements OnInit, OnDestroy {
 
   private inspectErrors(keys: string[], newData: any, allData: any) {
     return keys.reduce((acc, key) => {
+      if (key === 'rowid') {
+        return acc;
+      }
       const itemValue = newData[key];
       const itemType = this.currentTable.columns.find(column => column.name === key).type;
       let err = validators.validateRow(newData[key], itemType);

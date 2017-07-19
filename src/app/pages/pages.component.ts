@@ -74,6 +74,7 @@ export class Pages implements OnInit, OnDestroy {
     const tablesSection = PAGES_MENU
       .find(section => section.path === 'pages').children
       .find(section => section.path === 'tables');
+    data = data || [];
     tablesSection.children = tablesSection.children.concat(
       data.map(table => ({
         path: [`/pages`, `tables`, `${table.name}`],

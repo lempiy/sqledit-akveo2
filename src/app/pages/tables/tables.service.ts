@@ -26,7 +26,7 @@ export class TablesService {
 
     getRows(name: string): Observable<any> {
         const body = {
-            'query': `SELECT * FROM ${name};`,
+            'query': `SELECT rowid, * FROM ${name};`,
         };
         return this.http.patch(`/query/execute`, body).map(response => response.json());
     }

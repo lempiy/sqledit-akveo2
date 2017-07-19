@@ -37,6 +37,7 @@ export class AllTables implements OnInit, OnDestroy {
   ngOnInit() {
     this.cons.push(
       this.service.getData().subscribe(data => {
+        data = data || [];
         this.allTableData = data.map(table => ({
           name: table.name,
           columns: table.columns ? table.columns.length : 0,
