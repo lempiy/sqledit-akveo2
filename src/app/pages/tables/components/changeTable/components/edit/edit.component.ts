@@ -93,7 +93,6 @@ export class Edit implements OnInit, OnDestroy {
             });
             return row;
           });
-          console.log(this.allRows)
             
           this.currentTable.columns.forEach(column => {
             this.settings.columns[column.name] = {
@@ -144,6 +143,12 @@ export class Edit implements OnInit, OnDestroy {
             return acc;
           }, {});
           setTimeout(() => $event.source.update($event.data, withNull));
+        },
+        err => {
+          Object.assign(this.result, {
+            status: 'fail',
+            message: err,
+          });
         }),
       );
     }
@@ -276,7 +281,10 @@ export class Edit implements OnInit, OnDestroy {
           });
         },
         err => {
-
+          Object.assign(this.result, {
+            status: 'fail',
+            message: err,
+          });
         }),
       );
     }
